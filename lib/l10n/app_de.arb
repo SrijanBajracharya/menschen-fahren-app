@@ -1,0 +1,16 @@
+{
+  "helloWorld": "¡Hola Mundo!",
+  "username": "Benutername",
+  "password": "Passwort",
+  "usernameValidationHint": "Gültigen Benutzername eingeben",
+  "passwordValidationHint": "Sicheres Passwort eingaben",
+  "approvalOverviewTitle": "Approvals Übersicht",
+  "approvalClosedHeader": "Abgeschlossene Approvals",
+  "cancel": "ABBRECHEN",
+  "approve": "ZUSTIMMEN",
+  "reject": "ABLEHNEN",
+  "companyCode": "Company Code",
+  "companyCodeHint": "Enter Company code",
+  "approvalListEmpty": "Keine Approval Anfragen gefunden",
+  "loadingApprovals": "Lade Approvals"
+}

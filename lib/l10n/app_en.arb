@@ -1,0 +1,71 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+
+  "username": "Username",
+  "@username": {
+    "description": "A user's name e.g. for login page"
+  },
+
+  "password": "Password",
+  "@password": {
+    "description": "The user's password e.g. for the login page"
+  },
+
+  "companyCode": "Company Code",
+  "@companyCode": {
+    "description": "The code of a Company e.g. CLH"
+  },
+
+  "companyCodeHint": "Enter Company code",
+  "@companyCodeHint": {
+    "description": "Hint for validation of Company code"
+  },
+
+  "usernameValidationHint": "Enter valid username",
+  "@usernameValidationHint": {
+    "description": "Hint for validation of username input"
+  },
+
+  "passwordValidationHint": "Enter secure password",
+  "@passwordValidationHint": {
+    "description": "Hint for validation of password input"
+  },
+
+  "approvalOverviewTitle": "Approvals Overview",
+  "@approvalOverviewTitle": {
+    "description": "The title of the approval request list page"
+  },
+
+  "approvalClosedHeader": "Closed Approvals",
+  "@approvalClosedHeader": {
+    "description": "The header displayed above the already closed approval requests"
+  },
+
+  "cancel": "CANCEL",
+  "@cancel": {
+    "description": "The Cancel button"
+  },
+
+  "approve": "APPROVE",
+  "@approve": {
+    "description": "The Approve button"
+  },
+
+  "reject": "REJECT",
+  "@reject": {
+    "description": "The Reject button"
+  },
+
+  "approvalListEmpty": "No approval requests found",
+  "@reject": {
+    "description": "Shown if the overview page has no approvals to show."
+  },
+
+  "loadingApprovals": "Loading Approvals",
+  "@reject": {
+    "description": "Shown while the overview loads the details."
+  }
+}
