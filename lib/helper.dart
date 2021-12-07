@@ -31,7 +31,7 @@ class Helper {
   // Formats a DateTime as Date
   static String formatDate(DateTime dateTime) {
     if (dateTime == null) {
-      return "";
+      return " ";
     } else {
       return _dateFormatter.format(dateTime);
     }
