@@ -1,0 +1,7 @@
+enum ButtonType{
+  OUTLINE,
+
+  TEXT,
+
+
+}

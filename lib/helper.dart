@@ -12,15 +12,12 @@ class Helper {
       case 0:
       // 0 Means no Warning
         return Colors.black12;
-        break;
 
       case 1:
         return Colors.amber;
-        break;
 
       case 2:
         return Colors.red;
-        break;
 
       default:
       // Unknown Warning Level
@@ -35,6 +32,5 @@ class Helper {
     } else {
       return _dateFormatter.format(dateTime);
     }
-    ;
   }
 }

@@ -6,9 +6,12 @@ import 'package:project_menschen_fahren/logger.dart';
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
 import 'package:project_menschen_fahren/pages/ac_status.dart';
 import 'package:project_menschen_fahren/pages/auth_page.dart';
+import 'package:project_menschen_fahren/pages/edit_profile.dart';
 import 'package:project_menschen_fahren/pages/error_page.dart';
+import 'package:project_menschen_fahren/pages/event_description.dart';
 import 'package:project_menschen_fahren/pages/fleet_status.dart';
 import 'package:project_menschen_fahren/pages/my_events_page.dart';
+import 'package:project_menschen_fahren/pages/profile.dart';
 import 'package:project_menschen_fahren/pages/registration_page.dart';
 import 'package:project_menschen_fahren/pages/splash_screen.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
@@ -47,10 +50,10 @@ class RouteGenerator {
         return _generateRoute(settings).builder.call(ctx);
       }else{
         //return AuthScreen(routeName: settings.name,);
-        return MyEventsPage();
+        return Profile();
       }
     } else if (snapshot.hasError) {
-      return AuthScreen(message: 'Error ',routeName: settings.name,);
+      return LoginPage();
     } else {
       return const SplashScreen();
     }
@@ -94,7 +97,7 @@ class RouteGenerator {
       case RoutesName.AC_STATUS:
         if (args is String) {
           return MaterialPageRoute(
-              builder: (_) => AcStatus(acReg: args),
+              builder: (_) => Profile(),
               settings: const RouteSettings(name: RoutesName.AC_STATUS)
           );
         }
@@ -105,6 +108,18 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (_) => MyEventsPage());
         }
         break;
+
+      case RoutesName.PROFILE:
+        return MaterialPageRoute(
+            builder: (_) => Profile(),
+            settings: const RouteSettings(name: RoutesName.PROFILE)
+        );
+
+      case RoutesName.EDIT_PROFILE:
+        return MaterialPageRoute(
+            builder: (_) => EditProfile(),
+            settings: const RouteSettings(name: RoutesName.EDIT_PROFILE)
+        );
 
       default:
         return _errorRoute();
@@ -121,14 +136,14 @@ class RouteGenerator {
 
   static MaterialPageRoute _buildLoginPageRoute() {
     return MaterialPageRoute(
-        builder: (context) => const AuthScreen() ,
+        builder: (context) => const LoginPage() ,
         settings: const RouteSettings(name: RoutesName.ROUTE_LOGIN)
     );
   }
 
   static MaterialPageRoute _buildRegistrationPageRoute() {
     return MaterialPageRoute(
-        builder: (context) => const RegistrationScreen() ,
+        builder: (context) => const RegistrationPage() ,
         settings: const RouteSettings(name: RoutesName.ROUTE_REGISTRATION)
     );
   }

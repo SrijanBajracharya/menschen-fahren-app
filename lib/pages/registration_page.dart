@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/exceptions/http_exception.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
@@ -5,41 +6,11 @@ import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
+import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:project_menschen_fahren/widgets/components/password_field.dart';
 import 'package:provider/provider.dart';
 
-/// The login screen.
-class RegistrationScreen extends StatelessWidget {
-  //const AuthScreen({Key? key}) : super(key: key);
-  const RegistrationScreen({Key? key, String? routeName, String? message})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Container(
-              height: deviceSize.height,
-              width: deviceSize.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: const RegistrationPage(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 /// Stateful widget that represents the login page.
 class RegistrationPage extends StatefulWidget {
@@ -64,17 +35,9 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
     'password': '',
   };
 
-  /// Obscure text for password.
-  bool _obscureText = true;
 
   _RegistrationPageState() : super(false);
 
-  // Toggles the password show status
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
 
   @override
   String getTitle(BuildContext context) {
@@ -140,148 +103,34 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
 
   @override
   Widget buildContent(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(top: 30.0),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: TextFormField(
-              // controller: usernameController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'First Name',
-                  hintText: 'Enter you First Name'
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your First Name';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData['firstname'] = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: TextFormField(
-              // controller: usernameController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Last Name',
-                  hintText: 'Enter you Last Name'
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your Last name';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData['lastname'] = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: TextFormField(
-              // controller: usernameController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Email',
-                  hintText: 'Enter you Email ID'
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter Email ID';
-                }
-                if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-                  return 'Invalid Email';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData['email'] = value!;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: TextFormField(
-              // controller: passwordController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: "Password",
-                  hintText: "Please Enter your Password"
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter password';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData['password'] = value!;
-              },
-              obscureText: _obscureText,
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    // controller: passwordController,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: "Confirm Password",
-                        hintText: "Rewrite your Password"
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Rewrite your password';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _authData['password'] = value!;
-                    },
-                    obscureText: _obscureText,
-                  ),
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text("Show Password"),
-                    value: !_obscureText,
-                    onChanged: (bool? newValue) => _toggle(),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                  OutlinedButton(
-                    onPressed: () => _pressedLogin(context),
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xff8BBA50),
-                        minimumSize: const Size(100, 50),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 80
-                        )
-                    ),
-                    child: const Text(
-                      'Signup',
-                      style: TextStyle(
-                          color: Colors.white
+    return Scaffold(
+        body: Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+                child:Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.only(top: 30.0),
                       ),
-                    ),
+                      UiHelper.getTextField("First Name", "Enter First Name", 'Please Enter First Name', 'firstname',true),
+                      UiHelper.getTextField("Last Name", "Enter Last Name", 'Please Enter Last Name', 'lastname',true),
+                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
+                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', validationMessage: 'Enter your Password.'),
+                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', validationMessage: 'Rewrite your Password.'),
+                      UiHelper.getTextField("Confirm Password", "Rewrite your Password", 'Rewrite your password', 'confirmPassword',true),
+
+                      CustomButton(buttonText: 'Signup', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)
+                    ],
                   ),
-                ],
-              )),
-        ],
-      ),
+                ),
+              )
+            ]
+        )
     );
   }
 }
+
+

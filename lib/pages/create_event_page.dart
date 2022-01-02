@@ -1,8 +1,12 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
+import 'package:project_menschen_fahren/widgets/components/custom_dropdown.dart';
+import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
 
 class CreateEvent extends StatefulWidget {
 
@@ -19,9 +23,10 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   /// Map containing the details from the login form.
-  final Map<String, String> _authData = {
+  final Map<String, String> _createEventData = {
     'email': '',
     'password': '',
+    'descText':''
   };
 
   Future<void> _pressedLogin(BuildContext context) async {
@@ -43,103 +48,52 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
             const Padding(
               padding: EdgeInsets.only(top: 30.0),
             ),
-            getDropdown('Event Type',() =>getEventTypeDropdown()),
-            getDropdown('Country',()=>getCountryDropdown()),
-            getTextField("Destination", "Please Enter your Event Destination", 'Please enter Destination', 'destination'),
-            getDatePicker('startDate'),
-            getDescriptionField(),
-            Center(
-              child: OutlinedButton(
-                onPressed: () => _pressedLogin(context),
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: Color(0xff8BBA50),
-                    minimumSize: const Size(100, 50),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 80
-                    )
-                ),
-                child: const Text(
-                  'Create',
-                  style: TextStyle(
-                      color: Colors.white
-                  ),
-                ),
-              ),
-            )
+            UiHelper.getTextField("Event Name", "Please Enter Event Name", 'Please enter Event Name', 'eventName',true),
+            CustomDropdown(label: 'Event Type', dropdownLabel: 'Choose', dropdownItems: _getEventTypes(),validate: true,),
+            UiHelper.getTextField("Number of Participants", "Please Enter a Number", 'Please enter Number', 'noOfParticipants',false),
+            CustomDropdown(label: 'Country', dropdownLabel: 'Choose', dropdownItems: _getCountries(),validate: true,),
+            UiHelper.getTextField("Destination", "Please Enter your Event Destination", 'Please enter Destination', 'destination',true),
+            getDatePicker(label: 'Start DateTime'),
+            getDatePicker(label: 'End DateTime'),
+            UiHelper.getDescriptionFieldWithValidation(label: 'Description',validationText: 'Please Enter Description', formKey: _createEventData['descText']!),
+            //UiHelper.buildButtonDefault(buttonText: 'Create', onPressedFunc: ()=>_onCreatePress())
+            CustomButton(buttonText: 'Create', onPressedFunc: ()=>_onCreatePress(), buttonType: ButtonType.TEXT)
           ],
         ),
       )
     );
   }
 
-  Widget getDescriptionField(){
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child:TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Description',
-          hintText: "Enter your text here",
-          border: const OutlineInputBorder()
-        ),
-        minLines: 1,
-        maxLines: 4,
-      ),
-    );
-  }
-  
-  Widget getTextField(String labelText, String hintText, String validatorMessage, String formKey){
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              // controller: passwordController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: labelText,
-                  hintText: hintText
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return validatorMessage;
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData[formKey] = value!;
-              },
-            ),
-          ],
-        )
-    );
+  void _onCreatePress(){
+    if (!_formKey.currentState!.validate()) {
+      // Invalid!
+      return;
+    }
+    _formKey.currentState!.save();
   }
 
-  Widget getDropdown(String labelName,Function callFunction){
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: labelName,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0)),
-          contentPadding: EdgeInsets.all(5),
-        ),
-        child: callFunction.call(),
-      ),
-    );
+  List<String> _getEventTypes(){
+    List<String> eventTypes = <String>['Seminar','Conference','Hiking','Trekking','Tour','Party','Gathering'];
+    return eventTypes;
   }
 
-  Widget getDatePicker(String formKey) {
-    final firstDate = DateTime(DateTime.now().year - 120);
+  List<String> _getCountries(){
+    List<String> countries = <String>['Nepal','India','Pakistan','Srilanka','Japan','South Korea','Indonesia','USA', 'Mexico','Nepal','India','Pakistan','Srilanka','Japan','South Korea','Indonesia','USA', 'Mexico'];
+    return countries;
+  }
+
+  Widget getDatePicker({required String label}) {
+    final firstDate = DateTime(DateTime
+        .now()
+        .year - 120);
     final lastDate = DateTime.now();
     final format = DateFormat("yyyy-MM-dd HH:mm");
 
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: DateTimeField(
+        padding: const EdgeInsets.all(15.0),
+        child: DateTimeField(
           decoration: InputDecoration(
-            labelText: 'Event Date',
+            labelText: label,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0)),
             contentPadding: EdgeInsets.all(20),
@@ -151,19 +105,22 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
               firstDate: DateTime(1900),
               initialDate: DateTime.now(),
               lastDate: DateTime(2100),
-              builder: (context, child) => Localizations.override(
-                context: context,
-                child: child,
-              ),
+              builder: (context, child) =>
+                  Localizations.override(
+                    context: context,
+                    child: child,
+                  ),
             );
             if (date != null) {
               final time = await showTimePicker(
                 context: context,
-                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                builder: (context, child) => Localizations.override(
-                  context: context,
-                  child: child,
-                ),
+                initialTime: TimeOfDay.fromDateTime(
+                    currentValue ?? DateTime.now()),
+                builder: (context, child) =>
+                    Localizations.override(
+                      context: context,
+                      child: child,
+                    ),
               );
               return DateTimeField.combine(date, time);
             } else {
@@ -171,57 +128,6 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
             }
           },
         )
-    );
-  }
-
-
-  Widget getEventTypeDropdown(){
-    return ButtonTheme(
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      child: DropdownButton<String>(
-        hint: const Text("Priority"),
-        isExpanded: true,
-        value: dropdownValue,
-        elevation: 16,
-        underline: DropdownButtonHideUnderline(
-          child: Container(),
-        ),
-        onChanged: (String? newValue) {
-          _authData['eventType'] = newValue!;
-        },
-        items: <String>['Red', 'Green', 'Blue']
-            .map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget getCountryDropdown(){
-    return ButtonTheme(
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-      child: DropdownButton<String>(
-        hint: const Text("Country"),
-        isExpanded: true,
-        value: dropdownValue,
-        elevation: 16,
-        underline: DropdownButtonHideUnderline(
-          child: Container(),
-        ),
-        onChanged: (String? newValue) {
-          _authData['country'] = newValue!;
-        },
-        items: <String>['Red', 'Green', 'Blue']
-            .map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/exceptions/http_exception.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
@@ -5,41 +6,10 @@ import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
+import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:project_menschen_fahren/widgets/components/password_field.dart';
 import 'package:provider/provider.dart';
-
-/// The login screen.
-class AuthScreen extends StatelessWidget {
-  //const AuthScreen({Key? key}) : super(key: key);
-  const AuthScreen({Key? key, String? routeName, String? message})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Container(
-              height: deviceSize.height,
-              width: deviceSize.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
-                    child: const LoginPage(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 /// Stateful widget that represents the login page.
 class LoginPage extends StatefulWidget {
@@ -62,40 +32,14 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     'password': '',
   };
 
-  /// Obscure text for password.
-  bool _obscureText = true;
-
   _LoginPageState() : super(false);
-
-  // Toggles the password show status
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
 
   @override
   String getTitle(BuildContext context) {
     return LoginPage.TITLE;
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Okay'),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      ),
-    );
-  }
+
 
   /// Handling the press on the login button.
   Future<void> _pressedLogin(BuildContext context) async {
@@ -128,98 +72,39 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password.';
       }
-      _showErrorDialog(errorMessage);
+      UiHelper.showErrorDialog(context: context, header: 'Error', message: errorMessage);
     } catch (error) {
       const errorMessage =
           'Could not authenticate you. Please try again later.';
-      _showErrorDialog(errorMessage);
+      UiHelper.showErrorDialog(context: context, header: 'Error', message: errorMessage);
     }
   }
 
   @override
   Widget buildContent(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.only(top: 30.0),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: TextFormField(
-              // controller: usernameController,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: 'Email',
-                  hintText: 'Enter you Email ID'
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter Email ID';
-                }
-                if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-                  return 'Invalid Email';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _authData['email'] = value!;
-              },
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    // controller: passwordController,
-                    decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: "Password",
-                        hintText: "Please Enter your Password"
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter password';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _authData['password'] = value!;
-                    },
-                    obscureText: _obscureText,
-                  ),
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text("Show Password"),
-                    value: !_obscureText,
-                    onChanged: (bool? newValue) => _toggle(),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                  OutlinedButton(
-                    onPressed: () => _pressedLogin(context),
-                    style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xff8BBA50),
-                        minimumSize: const Size(100, 50),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 80
-                        )
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Colors.white
+    return Scaffold(
+            backgroundColor: Colors.white,
+            body: Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.only(top: 30.0),
                       ),
-                    ),
+
+                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
+                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', validationMessage: 'Enter your Password.'),
+                      CustomButton(buttonText: 'Login', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)
+
+                    ],
                   ),
-                ],
-              )),
-        ],
-      ),
+                )
+              )
+            ])
     );
   }
 }

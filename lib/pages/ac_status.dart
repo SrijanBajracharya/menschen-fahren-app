@@ -97,5 +97,4 @@ class _AcStatusState extends StatefulBasePage<AcStatus> {
     return widget.acReg;
   }
 
-
 }

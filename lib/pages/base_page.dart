@@ -1,7 +1,11 @@
 
+import 'package:project_menschen_fahren/models/notification_data.dart';
+import 'package:project_menschen_fahren/models/user_notification.dart';
 import 'package:project_menschen_fahren/widgets/components/app_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:project_menschen_fahren/widgets/components/notification.dart';
 
 abstract class BasePage extends StatelessWidget {
 
@@ -28,17 +32,22 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   StatefulBasePage(this.showHamburgerMenu) : super();
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  // void _openDrawer()=>_drawerKey.currentState!.openDrawer();
+  void _openDrawer()=>_drawerKey.currentState!.openDrawer();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      endDrawer: AppDrawer(),
+      //endDrawer:showHamburgerMenu? const AppDrawer(): null,
       appBar: AppBar(
         backgroundColor: Color(0xff8BBA50),
         title: Text(getTitle(context),
-
         ),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.notifications_none), onPressed: () => openDialog()),
+          //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xff8BBA50),
@@ -67,7 +76,7 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
           ),
         ],
       ),
-      drawer:showHamburgerMenu? const AppDrawer(): null,
+
       body: buildContent(context),);
 
   }
@@ -75,4 +84,20 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   Widget buildContent(BuildContext context);
 
   String getTitle(BuildContext context);
+
+  void openDialog() {
+
+    List<UserNotification> userNotifications = <UserNotification>[];
+    userNotifications.add(UserNotification(user: 'Srijan', eventName: 'Pokhara Trip', requestToJoin: true));
+    userNotifications.add(UserNotification(user: 'John', eventName: 'Japan Trip', requestToJoin: false));
+
+    NotificationData notificationData = NotificationData(notifications: userNotifications);
+
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return NotificationDialog(notificationData: NotificationData(notifications: userNotifications));
+        },
+        fullscreenDialog: true));
+  }
+
 }
