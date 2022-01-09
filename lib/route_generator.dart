@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:project_menschen_fahren/logger.dart';
+import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
 import 'package:project_menschen_fahren/pages/ac_status.dart';
-import 'package:project_menschen_fahren/pages/auth_page.dart';
+import 'package:project_menschen_fahren/pages/login_page.dart';
 import 'package:project_menschen_fahren/pages/edit_profile.dart';
 import 'package:project_menschen_fahren/pages/error_page.dart';
 import 'package:project_menschen_fahren/pages/event_description.dart';
 import 'package:project_menschen_fahren/pages/fleet_status.dart';
 import 'package:project_menschen_fahren/pages/my_events_page.dart';
+import 'package:project_menschen_fahren/pages/my_favorite.dart';
 import 'package:project_menschen_fahren/pages/profile.dart';
 import 'package:project_menschen_fahren/pages/registration_page.dart';
 import 'package:project_menschen_fahren/pages/splash_screen.dart';
@@ -49,8 +51,7 @@ class RouteGenerator {
       if(snapshot.data){
         return _generateRoute(settings).builder.call(ctx);
       }else{
-        //return AuthScreen(routeName: settings.name,);
-        return Profile();
+        return LoginPage();
       }
     } else if (snapshot.hasError) {
       return LoginPage();
@@ -82,6 +83,16 @@ class RouteGenerator {
             settings: const RouteSettings(name: RoutesName.FLEET_STATUS)
         );
 
+      case RoutesName.EVENT_DESCRIPTION:
+        if (args is EventResponse) {
+          return MaterialPageRoute(
+              builder: (_) => EventDescription(data: args,),
+              settings: const RouteSettings(name: RoutesName.EVENT_DESCRIPTION)
+          );
+        }
+        break;
+
+
       case RoutesName.DELAYS:
         return MaterialPageRoute(
             builder: (_) => Delays(true),
@@ -104,10 +115,13 @@ class RouteGenerator {
         break;
 
       case RoutesName.ITEM_DETAILS:
-        if (args is MaintLogType) {
-          return MaterialPageRoute(builder: (_) => MyEventsPage());
-        }
-        break;
+        return MaterialPageRoute(builder: (_) => MyEventsPage());
+
+      case RoutesName.FAVORITES:
+        return MaterialPageRoute(
+            builder: (_) => MyFavorite(),
+            settings: const RouteSettings(name: RoutesName.FAVORITES)
+        );
 
       case RoutesName.PROFILE:
         return MaterialPageRoute(

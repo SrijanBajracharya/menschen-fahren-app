@@ -322,7 +322,7 @@ class UiHelper{
   }
 
 
-  static Widget getTextFieldWithRegExValidation(String labelText, String hintText, String validatorMessage, String formKey,String regEx,String regExValidationErrorMessage, bool validate){
+  static Widget getTextFieldWithRegExValidation(String labelText, String hintText, String validatorMessage,Map<String,String>dataForm, String formKey,String regEx,String regExValidationErrorMessage, bool validate){
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
@@ -348,7 +348,8 @@ class UiHelper{
                 }
               },
               onSaved: (value) {
-                //_authData[formKey] = value!;
+                dataForm[formKey] = value!;
+                print(formKey + "####k ho");
               },
             ),
           ],
@@ -394,6 +395,46 @@ class UiHelper{
               Navigator.of(ctx).pop();
             },
           )
+        ],
+      ),
+    );
+  }
+
+  static void showYesNoDialog({required BuildContext context,required String title, required String message,required String yesButtonText,required String noButtonText,required Function yesButtonOperation,required Function noButtonOperation}) async{
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title:  Text(title),
+        content:  Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => yesButtonOperation.call(),
+            child: Text(yesButtonText),
+          ),
+          TextButton(
+            onPressed: () => noButtonOperation.call(),
+            child: Text(noButtonText),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static void showYesNoDialogWithContent({required BuildContext context,required String title,required Widget content,required String yesButtonText,required String noButtonText,required Function yesButtonOperation,required Function noButtonOperation}) async{
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title:  Text(title),
+        content:  content,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => yesButtonOperation.call(),
+            child: Text(yesButtonText),
+          ),
+          TextButton(
+            onPressed: () => noButtonOperation.call(),
+            child: Text(noButtonText),
+          ),
         ],
       ),
     );

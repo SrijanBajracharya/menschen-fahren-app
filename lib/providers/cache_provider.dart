@@ -40,7 +40,7 @@ class CacheService {
   Future<List<DataCacheEntry>> _fetchDataCacheEntries(String authenticationToken, String type, String? filter) async {
 
     // create a URL based on the configured url and known endpoint that contains the parameters.
-    Uri serverAddress = Uri.parse(GlobalConfig.dataCacheServiceUrl + URL_GET_ENTRIES_ENDPOINT).replace(queryParameters: {
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + URL_GET_ENTRIES_ENDPOINT).replace(queryParameters: {
       'entryTypeCode' : type,
       'filterCriteria' : filter
     });
@@ -90,7 +90,7 @@ class CacheService {
 
     // create a URL based on the configured url and known endpoint that already contains the parameters.
     Uri serverAddress = Uri(
-      path: GlobalConfig.dataCacheServiceUrl + URL_GET_ENTRY_ENDPOINT,
+      path: GlobalConfig.menschenFahrenServiceUrl + URL_GET_ENTRY_ENDPOINT,
       queryParameters: {
         'dataCacheEntryId' : entryId
       },

@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:favorite_button/favorite_button.dart';
-import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
+import 'package:project_menschen_fahren/models/favorites_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,18 +13,18 @@ import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class MyFavorite extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _MyFavoriteState createState() => _MyFavoriteState();
 }
 
-class _HomeState extends StatefulBasePage<Home> {
-  _HomeState() : super(true);
+class _MyFavoriteState extends StatefulBasePage<MyFavorite> {
+  _MyFavoriteState() : super(true);
 
   @override
   Widget buildContent(BuildContext context) {
 
-    return EventList();
+    return MyFavoriteList();
   }
 
   @override
@@ -32,17 +33,17 @@ class _HomeState extends StatefulBasePage<Home> {
   }
 }
 
-class EventList extends StatefulWidget {
+class MyFavoriteList extends StatefulWidget {
 
   @override
-  _EventListState createState() {
-    return _EventListState();
+  _MyFavoriteListState createState() {
+    return _MyFavoriteListState();
   }
 }
 
-class _EventListState extends State<EventList> {
+class _MyFavoriteListState extends State<MyFavoriteList> {
 
-  Future<List<EventResponse>>? _events;
+  Future<List<MyFavoriteResponse>>? _events;
 
   @override
   void initState() {
@@ -54,9 +55,9 @@ class _EventListState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<EventResponse>>(
+    return FutureBuilder<List<MyFavoriteResponse>>(
       future: _events,
-      builder: (BuildContext context, AsyncSnapshot<List<EventResponse>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<MyFavoriteResponse>> snapshot) {
         if(snapshot.hasData) {
           return _buildDataList(context, snapshot.data);
         } else if (snapshot.hasError) {
@@ -66,8 +67,6 @@ class _EventListState extends State<EventList> {
         }
       },
     );
-
-
   }
 
   /* Builds the widget shown while the Approvals are loading. */
@@ -96,10 +95,9 @@ class _EventListState extends State<EventList> {
     );
   }
 
-  Widget _buildDataList(BuildContext context, List<EventResponse>? events){
-    print('length: $events!.length');
+  Widget _buildDataList(BuildContext context, List<MyFavoriteResponse>? events){
     List<Widget> widgets = List.empty(growable: true);
-    List<EventResponse> allEvents = List.empty(growable: true);
+    List<MyFavoriteResponse> allEvents = List.empty(growable: true);
     if(events != null ) {
       allEvents.addAll(events);
     }
@@ -109,7 +107,7 @@ class _EventListState extends State<EventList> {
 
     if(widgets.isEmpty) {
       // TODO l10n
-      widgets.add(Text('No Events Found'));
+      widgets.add(Text("You dont have favorite events"));
     }
     return ListView(
         children: widgets,
@@ -118,7 +116,7 @@ class _EventListState extends State<EventList> {
   }
 
   /* Build list cells for all the given Approvals. */
-  List<Widget> _buildListCells(BuildContext context, List<EventResponse> approvals) {
+  List<Widget> _buildListCells(BuildContext context, List<MyFavoriteResponse> approvals) {
 
     List<Widget> widgets = List.empty(growable: true);
 
@@ -130,7 +128,7 @@ class _EventListState extends State<EventList> {
   }
 
   /* Builds a cell for one entry of the list. */
-  Widget _buildListCell(BuildContext context, EventResponse data, int index) {
+  Widget _buildListCell(BuildContext context, MyFavoriteResponse data, int index) {
     return InkWell(
         onTap: () => _tapCell(context, data),
         child: Padding(
@@ -151,7 +149,7 @@ class _EventListState extends State<EventList> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(data.name,style: TextStyle(
+                          Text(data.event.name,style: TextStyle(
                             fontFamily: "Open sans",
                           ),),
                           FavoriteButton(
@@ -168,7 +166,7 @@ class _EventListState extends State<EventList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                data.description,
+                                data.event.description,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 3,
                                 style: GoogleFonts.openSans(fontSize: 16,fontStyle: FontStyle.normal),
@@ -186,11 +184,11 @@ class _EventListState extends State<EventList> {
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Event Date: ${DateHelper.formatDate(data.startDate)}',style: TextStyle(
+                        Text('Event Date: ${DateHelper.formatDate(data.event.startDate)}',style: TextStyle(
                           fontSize: 14,
                         ),
                         ),
-                        Text('Group: ${data.numberOfParticipants}',style: TextStyle(
+                        Text('Group: ${data.event.numberOfParticipants}',style: TextStyle(
                           fontSize: 14,
                         ),)
                       ],
@@ -202,11 +200,11 @@ class _EventListState extends State<EventList> {
   }
 
   /* Tap the cell to open the details page. */
-  void _tapCell(BuildContext context, EventResponse data) {
+  void _tapCell(BuildContext context, MyFavoriteResponse data) {
     Navigator.of(context).pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
   }
 
-  Future<List<EventResponse>> _getEvents() async{
+  Future<List<MyFavoriteResponse>> _getEvents() async{
     print('inside getEvents..');
     try {
       AuthenticationTokenProvider tokenProvider = Provider.of<
@@ -218,7 +216,7 @@ class _EventListState extends State<EventList> {
 
       print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
-        final List<EventResponse> events = await service.getEventResponse(authenticationToken, false, false);
+        final List<MyFavoriteResponse> events = await service.getFavoriteEvents(authenticationToken,"456be2e3-4ebc-41c4-a129-cf8862f5c958");
         print('events: $events');
         return events;
       } else {

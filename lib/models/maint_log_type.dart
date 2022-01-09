@@ -1,3 +1,4 @@
+/*
 // TODO: Substructure for Deferral?
 
 /// Datatype for MaintLog/Workorder/Complaint including current Deferral if applicable
@@ -90,3 +91,4 @@ class MaintLogType {
         warningLevel: json['warningLevel'] as int);
   }
 }
+*/

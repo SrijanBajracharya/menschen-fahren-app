@@ -8,7 +8,7 @@ import 'package:logger/logger.dart';
 class AppConfig {
 
   /* The URL of the DataCache service. */
-  String dataCacheServiceUrl;
+  String menschenFahrenServiceUrl;
 
   /* If dummy data will be generated. */
   bool useDummyData;
@@ -17,7 +17,7 @@ class AppConfig {
 
   static Logger log = getLogger('AppConfig');
 
-  AppConfig({required this.dataCacheServiceUrl, required this.useDummyData, required this.keycloakUrl});
+  AppConfig({required this.menschenFahrenServiceUrl, required this.useDummyData, required this.keycloakUrl});
 
   /*
    * Loads a config file from the assets named after the provided environment.
@@ -39,7 +39,7 @@ class AppConfig {
     // decode our json
     final json = jsonDecode(contents);
     return AppConfig(
-        dataCacheServiceUrl: json['dataCacheServiceUrl'],
+        menschenFahrenServiceUrl: json['menschenFahrenServiceUrl'],
         useDummyData: json['useDummyData'],
         keycloakUrl: json['keycloakUrl']
     );
@@ -49,14 +49,14 @@ class AppConfig {
 /* Contains global configuration. */
 class GlobalConfig {
 
-  static String dataCacheServiceUrl = 'http://localhost:8080';
+  static String menschenFahrenServiceUrl = 'http://localhost:8080';
   static bool useDummyData = false;
   static String keycloakUrl = '';
 
   /* Setup the global config based on the the provided data */
   static setup(AppConfig config) {
 
-    GlobalConfig.dataCacheServiceUrl = config.dataCacheServiceUrl;
+    GlobalConfig.menschenFahrenServiceUrl = config.menschenFahrenServiceUrl;
     GlobalConfig.useDummyData = config.useDummyData;
     GlobalConfig.keycloakUrl = config.keycloakUrl;
   }

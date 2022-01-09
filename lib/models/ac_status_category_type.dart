@@ -1,3 +1,4 @@
+/*
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
 
 class AcStatusCategoryType {
@@ -13,3 +14,4 @@ class AcStatusCategoryType {
   // Todo: fromJson?
 
 }
+*/

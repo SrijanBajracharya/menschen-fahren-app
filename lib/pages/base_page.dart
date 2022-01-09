@@ -1,10 +1,8 @@
-
 import 'package:project_menschen_fahren/models/notification_data.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
-import 'package:project_menschen_fahren/widgets/components/app_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:project_menschen_fahren/widgets/components/app_drawer.dart';
 import 'package:project_menschen_fahren/widgets/components/notification.dart';
 
 abstract class BasePage extends StatelessWidget {
@@ -44,10 +42,10 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
         backgroundColor: Color(0xff8BBA50),
         title: Text(getTitle(context),
         ),
-        actions: <Widget>[
+        /*actions: <Widget>[
           IconButton(icon: Icon(Icons.notifications_none), onPressed: () => openDialog()),
           //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
-        ],
+        ],*/
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xff8BBA50),

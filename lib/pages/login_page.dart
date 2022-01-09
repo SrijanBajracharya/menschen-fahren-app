@@ -43,6 +43,10 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
 
   /// Handling the press on the login button.
   Future<void> _pressedLogin(BuildContext context) async {
+    print('here i am');
+
+    print(_authData['email']);
+    print(_authData['password']);
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -52,7 +56,7 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     try {
       final canLogin =
           await Provider.of<AuthenticationTokenProvider>(context, listen: false)
-              .login('', _authData['email']!,
+              .login(_authData['email']!,
                   _authData['password']!);
       if (canLogin) {
         Navigator.of(context).pushReplacementNamed(RoutesName.MAIN_PAGE);
@@ -96,8 +100,8 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
                         padding: EdgeInsets.only(top: 30.0),
                       ),
 
-                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
-                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', validationMessage: 'Enter your Password.'),
+                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', _authData,'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
+                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password',formKey: 'password',dataForm: _authData, validationMessage: 'Enter your Password.'),
                       CustomButton(buttonText: 'Login', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)
 
                     ],

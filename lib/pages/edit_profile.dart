@@ -41,7 +41,7 @@ class _EditProfileState extends StatefulBasePage<EditProfile> {
 
               UiHelper.getTextField("Currently Living in", "Please Enter your Current Address", 'Please enter Address', 'currentAddress',true),
               UiHelper.getTextField("Mobile Number", "Please Enter your Mobile number", 'Please enter your Mobile Number', 'mobileNo',true),
-              UiHelper.getTextFieldWithRegExValidation("Email Id", "Please Enter your Email Id", 'Please enter your Email Id', 'emailAddress',"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email',true),
+              UiHelper.getTextFieldWithRegExValidation("Email Id", "Please Enter your Email Id", 'Please enter your Email Id',_editProfileData, 'emailAddress',"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email',true),
 
               UiHelper.getDescriptionFieldWithValidation(label: "About me",validationText: "Please Enter something about You.",formKey: _editProfileData['aboutMe']!),
               UiHelper.getDescriptionFieldWithValidation(label: "About my Hobbies", validationText: "Please enter your hobbie",formKey: _editProfileData['hobbies']!),

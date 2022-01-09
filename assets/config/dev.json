@@ -1,5 +1,5 @@
 {
-  "dataCacheServiceUrl" : "http://192.168.178.75:8080/v1/datacache",
+  "menschenFahrenServiceUrl" : "http://10.0.2.2:8080",
   "useDummyData" : true,
   "keycloakUrl": "https://kc.myaviationapps.com/auth/realms/"
 }

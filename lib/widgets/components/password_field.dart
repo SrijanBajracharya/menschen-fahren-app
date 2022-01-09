@@ -13,10 +13,14 @@ class CustomPasswordField extends StatefulWidget {
   /// The password field hint Text.
   final String hintText;
 
+  String formKey;
+
   /// The password field validation Message.
   final String validationMessage;
 
-  CustomPasswordField({Key? key, required this.labelText, required this.hintText, required this.validationMessage}) : super(key: key);
+  final  Map<String,String> dataForm;
+
+  CustomPasswordField({Key? key, required this.labelText, required this.hintText,required this.dataForm, required this.formKey, required this.validationMessage}) : super(key: key);
 
   @override
   _CustomPasswordState createState() => _CustomPasswordState();
@@ -68,7 +72,8 @@ class _CustomPasswordState extends State<CustomPasswordField>{
                 return null;
               },
               onSaved: (value) {
-               // _authData['password'] = value!;
+                widget.dataForm[widget.formKey] = value!;
+                print(widget.formKey + "#####");
               },
               obscureText: _obscureText,
             ),

@@ -1,3 +1,4 @@
+/*
 import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/ac_status_category_type.dart';
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
@@ -98,3 +99,4 @@ class _AcStatusState extends StatefulBasePage<AcStatus> {
   }
 
 }
+*/

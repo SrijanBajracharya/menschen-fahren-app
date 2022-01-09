@@ -73,7 +73,7 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
     try {
       final canLogin =
       await Provider.of<AuthenticationTokenProvider>(context, listen: false)
-          .login('', _authData['email']!,
+          .login( _authData['email']!,
           _authData['password']!);
       if (canLogin) {
         Navigator.of(context).pushReplacementNamed(RoutesName.MAIN_PAGE);
@@ -117,9 +117,9 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
                       ),
                       UiHelper.getTextField("First Name", "Enter First Name", 'Please Enter First Name', 'firstname',true),
                       UiHelper.getTextField("Last Name", "Enter Last Name", 'Please Enter Last Name', 'lastname',true),
-                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
-                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', validationMessage: 'Enter your Password.'),
-                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', validationMessage: 'Rewrite your Password.'),
+                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id',_authData, 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
+                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', formKey: 'password',dataForm: _authData,validationMessage: 'Enter your Password.'),
+                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', formKey: 'password',dataForm: _authData,validationMessage: 'Rewrite your Password.'),
                       UiHelper.getTextField("Confirm Password", "Rewrite your Password", 'Rewrite your password', 'confirmPassword',true),
 
                       CustomButton(buttonText: 'Signup', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)

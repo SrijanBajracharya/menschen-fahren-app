@@ -15,16 +15,26 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           AppBar(
             backgroundColor: Color(0xff8BBA50),
-            title: const Text('AFV'),
+            title: const Text('Settings'),
             automaticallyImplyLeading: false,
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.approval),
-            title: const Text('Home'),
+            leading: const Icon(Icons.home),
+            title: const Text('Events'),
             onTap: () {
               if( ModalRoute.of(context)!.settings.name != RoutesName.MAIN_PAGE){
                 Navigator.pushReplacementNamed(context, RoutesName.MAIN_PAGE);
+              }
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.favorite),
+            title: const Text('My favorite'),
+            onTap: () {
+              if( ModalRoute.of(context)!.settings.name != RoutesName.FAVORITES){
+                Navigator.pushReplacementNamed(context, RoutesName.FAVORITES);
               }
             },
           ),

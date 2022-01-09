@@ -12,7 +12,7 @@ void main() async{
   // ensure that it is initialized to allow access to the assets
   WidgetsFlutterBinding.ensureInitialized();
 
-  final AppConfig config = await AppConfig.forEnvironment("prod");
+  final AppConfig config = await AppConfig.forEnvironment("dev");
   runApp(MyApp(config: config,));
 }
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value:AircraftProvider()),
-        ChangeNotifierProvider.value(value: MaintLogProvider()),
+        //ChangeNotifierProvider.value(value: MaintLogProvider()),
         ChangeNotifierProvider.value(
           value: AuthenticationTokenProvider(),
         ),
