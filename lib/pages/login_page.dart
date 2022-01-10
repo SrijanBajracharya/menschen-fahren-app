@@ -39,6 +39,9 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     return LoginPage.TITLE;
   }
 
+  void _register(BuildContext context){
+    Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_REGISTRATION);
+  }
 
 
   /// Handling the press on the login button.
@@ -102,8 +105,8 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
 
                       UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', _authData,'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
                       CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password',formKey: 'password',dataForm: _authData, validationMessage: 'Enter your Password.'),
-                      CustomButton(buttonText: 'Login', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)
-
+                      CustomButton(buttonText: 'Login', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE),
+                      CustomButton(buttonText: 'Register', onPressedFunc: ()=>_register(context), buttonType: ButtonType.TEXT)
                     ],
                   ),
                 )

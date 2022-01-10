@@ -22,6 +22,12 @@ class EventDescription extends StatefulWidget {
 class _EventDescriptionState extends StatefulBasePage<EventDescription> {
   _EventDescriptionState() : super(true);
 
+  final Map<String, String> _editEventData = {
+    'aboutMe': '',
+    'hobbies': '',
+    'descText':''
+  };
+
   @override
   Widget buildContent(BuildContext context) {
     return SingleChildScrollView(
@@ -59,10 +65,11 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomButton(buttonText: 'Edit', onPressedFunc: ()=>editButtonFunc(), buttonType: ButtonType.TEXT),
-                            CustomButton(buttonText: 'Invite', onPressedFunc: ()=>
-                                UiHelper.showYesNoDialogWithContent(context: context, title: 'Invite', content: UiHelper.getTextField("Invite Email", "Please Enter a Email", 'Please enter email', 'email',true), yesButtonText: 'Invite',
+                            /*CustomButton(buttonText: 'Invite', onPressedFunc: ()=>
+                                UiHelper.showYesNoDialogWithContent(context: context, title: 'Invite', content: UiHelper.getTextField("Invite Email", "Please Enter a Email", 'Please enter email',_editEventData, 'email',true), yesButtonText: 'Invite',
                                     noButtonText: 'Cancel', yesButtonOperation: ()=>inviteButtonFunc(), noButtonOperation: ()=>{}),
-                                buttonType: ButtonType.TEXT),
+                                buttonType: ButtonType.TEXT),*/
+                            CustomButton(buttonText: 'Invite', onPressedFunc: ()=>showDialogWithFields(), buttonType: ButtonType.TEXT),
                             CustomButton(buttonText: 'Request To Join', onPressedFunc: ()=>joinButtonFunc(), buttonType: ButtonType.TEXT),
                           ],
                         ),
@@ -95,13 +102,47 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
 
   }
 
+  void showDialogWithFields() {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                scrollable: true,
+                title: Text('Invite'),
+                content: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(Icons.email),
+                          ),
+                          validator: (value) {
+                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value!)){
+                                return "Invalid email";
+                              }
+                              return null;
+                          },
+                          onSaved: (value) {
 
-
-
-
-
-
-
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                      child: Text("Invite"),
+                      onPressed: () {
+                        // your code
+                      })
+                ],
+              );
+            });
+  }
 
   @override
   String getTitle(BuildContext context) {

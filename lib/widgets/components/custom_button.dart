@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
       case ButtonType.TEXT:
         return getTextButtonField(onPressedFunc);
       case ButtonType.OUTLINE:
-        return getTextButtonField(onPressedFunc);
+        return getOutlineButtonField(onPressedFunc);
     }
   }
 
@@ -47,14 +47,14 @@ class CustomButton extends StatelessWidget {
         print('im pressed');
         onPressedFunc.call();
       },
-      child:getBody()
+      child:getTextButtonBody()
     );
   }
 
   Widget getBody(){
     return Container(
       padding:
-      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      EdgeInsets.symmetric(vertical: 10, horizontal: 40),
       decoration: BoxDecoration(
         color: Color(0xff8BBA50),
         borderRadius:
@@ -65,6 +65,21 @@ class CustomButton extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'SF Pro',
           color: Colors.white,
+          fontWeight: FontWeight.w500,
+          fontSize: 16.0,
+        ),
+      ),
+    );
+  }
+
+  Widget getTextButtonBody(){
+    return Container(
+      padding:
+      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Text(
+        buttonText,
+        style: TextStyle(
+          fontFamily: 'SF Pro',
           fontWeight: FontWeight.w500,
           fontSize: 16.0,
         ),

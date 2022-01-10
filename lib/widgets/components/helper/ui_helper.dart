@@ -259,7 +259,7 @@ class UiHelper{
   }
 
   /// Builds a Text input field and validates if the needed.
-  static Widget getTextField(String labelText, String hintText, String validatorMessage, String formKey, bool validate){
+  static Widget getTextField(String labelText, String hintText, String validatorMessage, Map<String,String> dataForm,String formKey, bool validate){
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
@@ -282,7 +282,7 @@ class UiHelper{
                 }
               },
               onSaved: (value) {
-                //_authData[formKey] = value!;
+                dataForm[formKey] = value!;
               },
             ),
           ],
@@ -393,6 +393,29 @@ class UiHelper{
             child: (buttonText==null)? const Text('Okay'): Text(buttonText),
             onPressed: () {
               Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  static void showSuccessDialog({required BuildContext context,required String header, required String message, String? buttonText,Function? buttonFunc}) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(header),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: (buttonText==null)? const Text('Okay'): Text(buttonText),
+            onPressed: () {
+              if(buttonFunc !=null){
+                buttonFunc.call();
+              }else{
+                Navigator.of(ctx).pop();
+              }
+
             },
           )
         ],

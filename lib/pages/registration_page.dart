@@ -1,7 +1,9 @@
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/exceptions/http_exception.dart';
+import 'package:project_menschen_fahren/models/user_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
+import 'package:project_menschen_fahren/providers/user_service.dart';
 import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +31,9 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
 
   /// Map containing the details from the login form.
   final Map<String, String> _authData = {
-    'firstname': '',
-    'lastname':'',
+    'firstName': '',
+    'lastName':'',
+    'username':'',
     'email': '',
     'password': '',
   };
@@ -63,47 +66,37 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
   }
 
   /// Handling the press on the login button.
-  Future<void> _pressedLogin(BuildContext context) async {
+  Future<void> _pressedRegister(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     }
     _formKey.currentState!.save();
 
-    try {
-      final canLogin =
-      await Provider.of<AuthenticationTokenProvider>(context, listen: false)
-          .login( _authData['email']!,
-          _authData['password']!);
-      if (canLogin) {
-        Navigator.of(context).pushReplacementNamed(RoutesName.MAIN_PAGE);
-      }
-    } on HttpException catch (error) {
-      //TODO: this needs to be verified.
-      var errorMessage = 'Authentication failed';
-      if (error.toString().contains('invalid_grant')) {
-        errorMessage =
-        'The User is invalid. Either Username of password is incorrect.';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email address';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
-      }
-      _showErrorDialog(errorMessage);
-    } catch (error) {
-      const errorMessage =
-          'Could not authenticate you. Please try again later.';
-      _showErrorDialog(errorMessage);
+    UserService service = UserService();
+
+    if(_authData['password'] != _authData['confirmPassword']){
+      UiHelper.showErrorDialog(context: context, header: 'Error!!', message: 'Password does not match.');
+      return;
     }
+
+    try{
+      UserResponse user = await service.createUser(_authData);
+      print(user);
+      Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
+    }catch(error){
+      UiHelper.showErrorDialog(context: context, header: 'Error!!', message: error.toString());
+    }
+
+
+
+
   }
 
   @override
   Widget buildContent(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: Stack(
             children: <Widget>[
               SingleChildScrollView(
@@ -115,14 +108,13 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
                       const Padding(
                         padding: EdgeInsets.only(top: 30.0),
                       ),
-                      UiHelper.getTextField("First Name", "Enter First Name", 'Please Enter First Name', 'firstname',true),
-                      UiHelper.getTextField("Last Name", "Enter Last Name", 'Please Enter Last Name', 'lastname',true),
+                      UiHelper.getTextField("First Name", "Enter First Name", 'Please Enter First Name',_authData, 'firstName',true),
+                      UiHelper.getTextField("Last Name", "Enter Last Name", 'Please Enter Last Name', _authData,'lastName',true),
+                      UiHelper.getTextField("User Name", "Enter User name", 'Please Enter Username', _authData,'username',true),
                       UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id',_authData, 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
                       CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', formKey: 'password',dataForm: _authData,validationMessage: 'Enter your Password.'),
-                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', formKey: 'password',dataForm: _authData,validationMessage: 'Rewrite your Password.'),
-                      UiHelper.getTextField("Confirm Password", "Rewrite your Password", 'Rewrite your password', 'confirmPassword',true),
-
-                      CustomButton(buttonText: 'Signup', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE)
+                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', formKey: 'confirmPassword',dataForm: _authData,validationMessage: 'Rewrite your Password.'),
+                      CustomButton(buttonText: 'Signup', onPressedFunc: ()=>_pressedRegister(context), buttonType: ButtonType.OUTLINE)
                     ],
                   ),
                 ),
