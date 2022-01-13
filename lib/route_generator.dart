@@ -99,10 +99,10 @@ class RouteGenerator {
             settings: const RouteSettings(name: RoutesName.DELAYS)
         );
 
-      case RoutesName.EVENTS:
+      case RoutesName.CREATE_EVENT:
         return MaterialPageRoute(
             builder: (_) => CreateEvent(),
-            settings: const RouteSettings(name: RoutesName.EVENTS)
+            settings: const RouteSettings(name: RoutesName.CREATE_EVENT)
         );
 
       case RoutesName.AC_STATUS:

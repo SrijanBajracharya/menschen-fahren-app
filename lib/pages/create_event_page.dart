@@ -1,12 +1,17 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
+import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
+import 'package:project_menschen_fahren/providers/event_service.dart';
+import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_dropdown.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:provider/provider.dart';
 
 class CreateEvent extends StatefulWidget {
 
@@ -24,18 +29,19 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
 
   /// Map containing the details from the login form.
   final Map<String, String> _createEventData = {
-    'email': '',
-    'password': '',
-    'descText':''
+    'name': '',
+    'numberOfParticipants': '',
+    'countryCode':'',
+    'eventTypeId':'53be8c61-0afe-48ee-9974-b09c1643bcca',
+    'ageGroup':'',
+    'location':'',
+    'startDate':'',
+    'endDate':'',
+    'description':'',
+    'userId':'b8ad1ffe-a2ee-4f39-a5db-232fe9abf9ef',
+    'isPrivate':'false'
   };
 
-  Future<void> _pressedLogin(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) {
-      // Invalid!
-      return;
-    }
-    _formKey.currentState!.save();
-  }
 
   @override
   Widget buildContent(BuildContext context) {
@@ -48,14 +54,15 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
             const Padding(
               padding: EdgeInsets.only(top: 30.0),
             ),
-            UiHelper.getTextField("Event Name", "Please Enter Event Name", 'Please enter Event Name',_createEventData, 'eventName',true),
-            CustomDropdown(label: 'Event Type', dropdownLabel: 'Choose', dropdownItems: _getEventTypes(),validate: true,),
-            UiHelper.getTextField("Number of Participants", "Please Enter a Number", 'Please enter Number',_createEventData, 'noOfParticipants',false),
-            CustomDropdown(label: 'Country', dropdownLabel: 'Choose', dropdownItems: _getCountries(),validate: true,),
-            UiHelper.getTextField("Destination", "Please Enter your Event Destination", 'Please enter Destination',_createEventData, 'destination',true),
-            getDatePicker(label: 'Start DateTime'),
-            getDatePicker(label: 'End DateTime'),
-            UiHelper.getDescriptionFieldWithValidation(label: 'Description',validationText: 'Please Enter Description', formKey: _createEventData['descText']!),
+            UiHelper.getTextField("Event Name", "Please Enter Event Name", 'Please enter Event Name',_createEventData, 'name',true),
+            //CustomDropdown(label: 'Event Type', dropdownLabel: 'Choose', dropdownItems: _getEventTypes(),validate: true,dataForm: _createEventData,formKey: 'eventTypeId'),
+            UiHelper.getTextField("Number of Participants", "Please Enter a Number", 'Please enter Number',_createEventData, 'numberOfParticipants',false),
+            CustomDropdown(label: 'Country', dropdownLabel: 'Choose', dropdownItems: _getCountries(),validate: true,dataForm: _createEventData,formKey: 'countryCode',),
+            CustomDropdown(label: 'Age Group', dropdownLabel: 'Choose', dropdownItems: _getAgeGroup(),validate: true,dataForm: _createEventData,formKey: 'ageGroup',),
+            UiHelper.getTextField("Destination", "Please Enter your Event Destination", 'Please enter Destination',_createEventData, 'location',true),
+            getDatePicker(label: 'Start DateTime',dataForm: _createEventData,formKey: "startDate"),
+            getDatePicker(label: 'End DateTime',dataForm: _createEventData,formKey: "endDate"),
+            UiHelper.getDescriptionFieldWithValidation(label: 'Description',validationText: 'Please Enter Description', formKey: 'description',dataForm: _createEventData),
             //UiHelper.buildButtonDefault(buttonText: 'Create', onPressedFunc: ()=>_onCreatePress())
             CustomButton(buttonText: 'Create', onPressedFunc: ()=>_onCreatePress(), buttonType: ButtonType.TEXT)
           ],
@@ -64,12 +71,30 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
     );
   }
 
-  void _onCreatePress(){
+  Future<void> _onCreatePress() async{
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     }
     _formKey.currentState!.save();
+
+    AuthenticationTokenProvider tokenProvider = Provider.of<
+        AuthenticationTokenProvider>(context, listen: false);
+
+    EventService service = EventService();
+
+    try{
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if(authenticationToken !=null){
+        EventResponse response = await service.createEvent(authenticationToken, _createEventData);
+      }else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+      //Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
+    }catch(error){
+      UiHelper.showErrorDialog(context: context, header: 'Error!!', message: error.toString());
+    }
   }
 
   List<String> _getEventTypes(){
@@ -78,11 +103,16 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
   }
 
   List<String> _getCountries(){
-    List<String> countries = <String>['Nepal','India','Pakistan','Srilanka','Japan','South Korea','Indonesia','USA', 'Mexico','Nepal','India','Pakistan','Srilanka','Japan','South Korea','Indonesia','USA', 'Mexico'];
+    List<String> countries = <String>['Nepal','India','Pakistan','Srilanka','Japan','South Korea','Indonesia','USA', 'Mexico'];
     return countries;
   }
 
-  Widget getDatePicker({required String label}) {
+  List<String> _getAgeGroup(){
+    List<String> ageGroup =<String>['All','< 15','15-25','25-45',];
+    return ageGroup;
+  }
+
+  Widget getDatePicker({required String label,required Map<String,String> dataForm, required String formKey}) {
     final firstDate = DateTime(DateTime
         .now()
         .year - 120);
@@ -98,6 +128,9 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
                 borderRadius: BorderRadius.circular(5.0)),
             contentPadding: EdgeInsets.all(20),
           ),
+          onSaved: (value){
+            dataForm[formKey] = value!.toIso8601String();
+          },
           format: format,
           onShowPicker: (context, currentValue) async {
             final date = await showDatePicker(

@@ -283,6 +283,8 @@ class UiHelper{
               },
               onSaved: (value) {
                 dataForm[formKey] = value!;
+                print(formKey + "####k ho");
+                print(dataForm[formKey]);
               },
             ),
           ],
@@ -358,7 +360,7 @@ class UiHelper{
   }
 
   /// Builds a Description input field.
-  static Widget getDescriptionFieldWithValidation({required String label,required String validationText, required String formKey}){
+  static Widget getDescriptionFieldWithValidation({required String label,required String validationText,required Map<String,String>dataForm, required String formKey}){
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child:TextFormField(
@@ -374,7 +376,7 @@ class UiHelper{
           return null;
         },
         onSaved: (value) {
-          formKey = value!;
+          dataForm[formKey] = value!;
         },
         minLines: 1,
         maxLines: 4,

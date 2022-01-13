@@ -14,7 +14,9 @@ class EventService{
 
     return {
       'Authorization' : 'Bearer ' + authenticationToken,
-      "Access-Control-Allow-Origin": "*"
+      "Access-Control-Allow-Origin": "*",
+      "content-type" : "application/json",
+      "accept" : "application/json",
     };
   }
 
@@ -96,6 +98,41 @@ class EventService{
     } else {
 
       String errorResponse = _handleErrorResponse(response, "getEvents");
+      return Future.error(errorResponse);
+    }
+
+  }
+
+  Future<EventResponse> createEvent(String authenticationToken, Map<String,String> data) async {
+
+    print(data);
+
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/events');
+    print(serverAddress);
+    http.Response response;
+    try {
+      response = await http.post(serverAddress, headers: _buildHeader(authenticationToken), body: jsonEncode(data));
+      print(response.body);
+    } catch(e) {
+      return Future.error(e);
+    }
+
+    if (response.statusCode == 201) {
+
+      try {
+
+        //Read the "data" field from the response for the list of DataCacheEntry.
+        final jsonData = jsonDecode(response.body);
+        // TODO maybe make it more stable for cases if only one of them fails to parse.
+        return EventResponse.fromJson(jsonData['data']);
+
+      } catch (e) {
+        return Future.error(e);
+      }
+
+    }  else {
+
+      String errorResponse = _handleErrorResponse(response, "createUser");
       return Future.error(errorResponse);
     }
 

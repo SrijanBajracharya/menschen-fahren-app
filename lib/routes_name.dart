@@ -8,6 +8,7 @@ class RoutesName {
   static const String AC_STATUS = '/fleet/acstatus';
   static const String ITEM_DETAILS = '/fleet/acstatus/itemdetail';
   static const String FAVORITES="/favorite";
+  static const String CREATE_EVENT="/create-event";
 
   static const String DELAYS = '/delays';
   static const String EVENTS = '/events';

@@ -34,7 +34,7 @@ class _EditProfileState extends StatefulBasePage<EditProfile> {
               ),
 
               UiHelper.getTextField("Age","Please Enter your age","Please Enter your age",_editProfileData,"age",true),
-              CustomDropdown(label: 'Gender', dropdownLabel: 'Choose', dropdownItems: _getGenderList(),validate: true,),
+              CustomDropdown(label: 'Gender', dropdownLabel: 'Choose', dropdownItems: _getGenderList(),validate: true,dataForm: _editProfileData,formKey: "gender",),
               UiHelper.getTextField("Working at", "Please Enter your Work", 'Please enter your Work',_editProfileData, 'work',false),
 
               UiHelper.getTextField("Your are From", "Please Enter your Address", 'Please enter the Address',_editProfileData, 'address',true),
@@ -43,8 +43,8 @@ class _EditProfileState extends StatefulBasePage<EditProfile> {
               UiHelper.getTextField("Mobile Number", "Please Enter your Mobile number", 'Please enter your Mobile Number', _editProfileData,'mobileNo',true),
               UiHelper.getTextFieldWithRegExValidation("Email Id", "Please Enter your Email Id", 'Please enter your Email Id',_editProfileData, 'emailAddress',"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email',true),
 
-              UiHelper.getDescriptionFieldWithValidation(label: "About me",validationText: "Please Enter something about You.",formKey: _editProfileData['aboutMe']!),
-              UiHelper.getDescriptionFieldWithValidation(label: "About my Hobbies", validationText: "Please enter your hobbie",formKey: _editProfileData['hobbies']!),
+              UiHelper.getDescriptionFieldWithValidation(label: "About me",validationText: "Please Enter something about You.",formKey:'aboutMe',dataForm: _editProfileData),
+              UiHelper.getDescriptionFieldWithValidation(label: "About my Hobbies", validationText: "Please enter your hobbie",formKey: 'hobbies',dataForm: _editProfileData),
               CustomButton(buttonText: 'Update', onPressedFunc: ()=>_onUpdateCall(), buttonType: ButtonType.TEXT)
             ],
           ),
