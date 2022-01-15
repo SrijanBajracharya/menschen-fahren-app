@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Helper class containing different Ui components.
-class UiHelper{
-
+class UiHelper {
   /// Builds a default Divider without Indent
-  static Widget buildDivider(){
+  static Widget buildDivider() {
     return Divider(
       thickness: 1.4,
       color: Color(0xff8BBA50),
@@ -14,7 +13,8 @@ class UiHelper{
   }
 
   /// Builds a divider with indent.
-  static Widget buildDividerWithIndent({required double startIndent,required double endIndent}){
+  static Widget buildDividerWithIndent(
+      {required double startIndent, required double endIndent}) {
     return Divider(
       color: Color(0xff8BBA50),
       thickness: 1.4,
@@ -24,7 +24,7 @@ class UiHelper{
   }
 
   /// Builds icon info which contains a icon and a text.
-  static Widget buildIconInfo(IconData iconData,String? label, String text){
+  static Widget buildIconInfo(IconData iconData, String? label, String text) {
     return Container(
       child: Row(
         children: [
@@ -36,34 +36,28 @@ class UiHelper{
               color: Color(0xFF404040),
             ),
           ),
-          (label != null)?
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-            child:Text(
-              label,
-              style: TextStyle(
-                  fontSize: 16
-              ),
-            ),
-          ):Text(' '),
-
+          (label != null)
+              ? Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                  child: Text(
+                    label,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
+              : Text(' '),
           Padding(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Text(
                 text,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                ),
-              )
-          )
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ))
         ],
       ),
     );
   }
 
   /// Builds a description block where a long user text is displayed.
-  static Widget buildDescriptionBlock({required String descText}){
+  static Widget buildDescriptionBlock({required String descText}) {
     return Container(
       padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       child: Text(
@@ -72,66 +66,102 @@ class UiHelper{
           fontSize: 16,
         ),
         textAlign: TextAlign.justify,
-      )
-      ,
+      ),
     );
   }
 
   /// Builds a customizable circular avatar with camera icon attached to it.
-  static Widget getCircleAvatarWithCamera({required String assetName,required double outerRadius,required double innerRadius,required double cameraRadius, required double iconSize,required Function onIconClick}){
-    return _buildCircleAvatarWithCamera(assetName: assetName, outerRadius: outerRadius, innerRadius: innerRadius, cameraRadius: cameraRadius, iconSize: iconSize,onIconClick: onIconClick);
+  static Widget getCircleAvatarWithCamera(
+      {required String assetName,
+      required double outerRadius,
+      required double innerRadius,
+      required double cameraRadius,
+      required double iconSize,
+      required Function onIconClick}) {
+    return _buildCircleAvatarWithCamera(
+        assetName: assetName,
+        outerRadius: outerRadius,
+        innerRadius: innerRadius,
+        cameraRadius: cameraRadius,
+        iconSize: iconSize,
+        onIconClick: onIconClick);
   }
 
   /// Builds a circular avatar with Camera with default values.
-  static Widget getCircleAvatarWithCameraDefault({required String assetName,required Function onIconClick}){
-    return _buildCircleAvatarWithCamera(assetName: assetName, outerRadius: 100.0,innerRadius: 96.0,cameraRadius: 25.0, iconSize: 25.0,onIconClick: onIconClick);
+  static Widget getCircleAvatarWithCameraDefault(
+      {required String assetName, required Function onIconClick}) {
+    return _buildCircleAvatarWithCamera(
+        assetName: assetName,
+        outerRadius: 100.0,
+        innerRadius: 96.0,
+        cameraRadius: 25.0,
+        iconSize: 25.0,
+        onIconClick: onIconClick);
   }
 
   /// Builds a customizable circular avatar.
-  static Widget buildCustomCircleAvatar({required String assetName,required double outerRadius,required double innerRadius}){
-    return _getCircleAvatar(assetName: assetName, outerRadius: outerRadius, innerRadius: innerRadius);
+  static Widget buildCustomCircleAvatar(
+      {required String assetName,
+      required double outerRadius,
+      required double innerRadius}) {
+    return _getCircleAvatar(
+        assetName: assetName,
+        outerRadius: outerRadius,
+        innerRadius: innerRadius);
   }
 
   /// Builds a circular avatar with camera
-  static Widget _buildCircleAvatarWithCamera({required String assetName,required double outerRadius,required double innerRadius,required double cameraRadius, required double iconSize,required Function onIconClick}){
+  static Widget _buildCircleAvatarWithCamera(
+      {required String assetName,
+      required double outerRadius,
+      required double innerRadius,
+      required double cameraRadius,
+      required double iconSize,
+      required Function onIconClick}) {
     return SizedBox(
       child: CircleAvatar(
         radius: outerRadius,
         backgroundColor: Color(0xff8BBA50),
         child: CircleAvatar(
-          child: _buildCameraInPicture(cameraRadius: cameraRadius,iconSize: iconSize,onIconClick: onIconClick),
+          child: _buildCameraInPicture(
+              cameraRadius: cameraRadius,
+              iconSize: iconSize,
+              onIconClick: onIconClick),
           radius: innerRadius,
-          backgroundImage: AssetImage(
-              assetName),
+          backgroundImage: AssetImage(assetName),
         ),
       ),
     );
   }
 
   /// Builds a circular avatar with no camera icon attached to it.
-  static Widget _getCircleAvatar({required String assetName,required double outerRadius,required double innerRadius}){
+  static Widget _getCircleAvatar(
+      {required String assetName,
+      required double outerRadius,
+      required double innerRadius}) {
     return SizedBox(
       child: CircleAvatar(
         radius: outerRadius,
         backgroundColor: Color(0xff8BBA50),
         child: CircleAvatar(
           radius: innerRadius,
-          backgroundImage: AssetImage(
-              assetName),
+          backgroundImage: AssetImage(assetName),
         ),
       ),
     );
   }
 
   /// Attaches a camera to the circular avatar.
-  static Widget _buildCameraInPicture({required double cameraRadius, required double iconSize,required Function onIconClick}){
+  static Widget _buildCameraInPicture(
+      {required double cameraRadius,
+      required double iconSize,
+      required Function onIconClick}) {
     return Align(
       alignment: Alignment.bottomRight,
       child: CircleAvatar(
         backgroundColor: Color(0xff8BBA50),
         radius: cameraRadius,
-        child:
-        IconButton(
+        child: IconButton(
           icon: Icon(
             Icons.camera_alt,
             size: iconSize,
@@ -140,13 +170,12 @@ class UiHelper{
           color: Colors.black,
           onPressed: () => onIconClick.call(),
         ),
-
       ),
     );
   }
 
   /// Builds a Title Text and places it center of the page.
-  static Widget buildCenterTitle({required String title}){
+  static Widget buildCenterTitle({required String title}) {
     return Center(
       child: Container(
         padding: EdgeInsets.only(top: 16.0),
@@ -163,7 +192,7 @@ class UiHelper{
   }
 
   /// Builds left aligned Title.
-  static Widget buildTitle({required String title}){
+  static Widget buildTitle({required String title}) {
     return Container(
       padding: EdgeInsets.only(top: 16.0),
       child: Text(
@@ -178,7 +207,8 @@ class UiHelper{
   }
 
   /// Builds a default button with predefined color.
-  static Widget buildButtonDefault({required String buttonText,required Function onPressedFunc}){
+  static Widget buildButtonDefault(
+      {required String buttonText, required Function onPressedFunc}) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -188,12 +218,10 @@ class UiHelper{
             onPressedFunc;
           },
           child: Container(
-            padding:
-            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
               color: Color(0xff8BBA50),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
             ),
             child: Text(
               buttonText,
@@ -211,23 +239,27 @@ class UiHelper{
   }
 
   /// Builds a Dropdown component.
-  static Widget getDropdown({required String fieldLabelText,required String dropDownLabel,required List<String> dropdownItems}){
+  static Widget getDropdown(
+      {required String fieldLabelText,
+      required String dropDownLabel,
+      required List<String> dropdownItems}) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: fieldLabelText,
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
           contentPadding: EdgeInsets.all(5),
         ),
-        child: _buildDropdown(dropDownLabel: dropDownLabel, dropdownItems: dropdownItems),
+        child: _buildDropdown(
+            dropDownLabel: dropDownLabel, dropdownItems: dropdownItems),
       ),
     );
   }
 
   /// Populates a dropdown values.
-  static Widget _buildDropdown({required String dropDownLabel,required List<String> dropdownItems}){
+  static Widget _buildDropdown(
+      {required String dropDownLabel, required List<String> dropdownItems}) {
     return ButtonTheme(
       materialTapTargetSize: MaterialTapTargetSize.padded,
       child: DropdownButton<String>(
@@ -240,26 +272,33 @@ class UiHelper{
         onChanged: (String? newValue) {
           //_authData['eventType'] = newValue!;
         },
-        items: dropdownItems
-            .map<DropdownMenuItem<String>>((String value) {
+        items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
               value: value,
               child: SingleChildScrollView(
-                child: Column(
-                    children: [
-                      Text(value, textAlign: TextAlign.left,overflow: TextOverflow.ellipsis,),
-                      //UiHelper.buildDivider()
-                    ]
+                child: Column(children: [
+                  Text(
+                    value,
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
                   ),
-              )
-          );
+                  //UiHelper.buildDivider()
+                ]),
+              ));
         }).toList(),
       ),
     );
   }
 
   /// Builds a Text input field and validates if the needed.
-  static Widget getTextField(String labelText, String hintText, String validatorMessage, Map<String,String> dataForm,String formKey, bool validate){
+  static Widget getTextField({
+      required String labelText,
+      required String hintText,
+      required String validatorMessage,
+      required Map<String, String> dataForm,
+      required String formKey,
+      required bool validate,
+      String? initValue}) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
@@ -269,15 +308,15 @@ class UiHelper{
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: labelText,
-                  hintText: hintText
-              ),
+                  hintText: hintText),
+              initialValue: initValue !=null ? initValue: null,
               validator: (value) {
-                if(validate){
+                if (validate) {
                   if (value == null || value.isEmpty) {
                     return validatorMessage;
                   }
                   return null;
-                }else{
+                } else {
                   return null;
                 }
               },
@@ -288,11 +327,16 @@ class UiHelper{
               },
             ),
           ],
-        )
-    );
+        ));
   }
 
-  static Widget getPasswordField(String labelText, String hintText, String validatorMessage, String formKey,Function toggleConsumer, bool validate){
+  static Widget getPasswordField(
+      String labelText,
+      String hintText,
+      String validatorMessage,
+      String formKey,
+      Function toggleConsumer,
+      bool validate) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
@@ -302,15 +346,14 @@ class UiHelper{
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: labelText,
-                  hintText: hintText
-              ),
+                  hintText: hintText),
               validator: (value) {
-                if(validate){
+                if (validate) {
                   if (value == null || value.isEmpty) {
                     return validatorMessage;
                   }
                   return null;
-                }else{
+                } else {
                   return null;
                 }
               },
@@ -319,33 +362,40 @@ class UiHelper{
               },
             ),
           ],
-        )
-    );
+        ));
   }
 
-
-  static Widget getTextFieldWithRegExValidation(String labelText, String hintText, String validatorMessage,Map<String,String>dataForm, String formKey,String regEx,String regExValidationErrorMessage, bool validate){
+  static Widget getTextFieldWithRegExValidation({
+      required String labelText,
+      required String hintText,
+      required String validatorMessage,
+      required Map<String, String> dataForm,
+      required String formKey,
+      required String regEx,
+      required String regExValidationErrorMessage,
+      required bool validate,
+      String? initValue}) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Column(
           children: <Widget>[
             TextFormField(
+              initialValue: initValue,
               // controller: passwordController,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   labelText: labelText,
-                  hintText: hintText
-              ),
+                  hintText: hintText),
               validator: (value) {
-                if(validate){
+                if (validate) {
                   if (value == null || value.isEmpty) {
                     return validatorMessage;
                   }
-                  if(!RegExp(regEx).hasMatch(value)){
+                  if (!RegExp(regEx).hasMatch(value)) {
                     return regExValidationErrorMessage;
                   }
                   return null;
-                }else{
+                } else {
                   return null;
                 }
               },
@@ -355,20 +405,24 @@ class UiHelper{
               },
             ),
           ],
-        )
-    );
+        ));
   }
 
   /// Builds a Description input field.
-  static Widget getDescriptionFieldWithValidation({required String label,required String validationText,required Map<String,String>dataForm, required String formKey}){
+  static Widget getDescriptionFieldWithValidation(
+      {required String label,
+      required String validationText,
+      required Map<String, String> dataForm,
+      required String formKey,
+      String ? initValue}) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child:TextFormField(
+      child: TextFormField(
+        initialValue: initValue,
         decoration: InputDecoration(
             labelText: label,
             hintText: "Enter your text here",
-            border: const OutlineInputBorder()
-        ),
+            border: const OutlineInputBorder()),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return validationText;
@@ -384,7 +438,11 @@ class UiHelper{
     );
   }
 
-  static void showErrorDialog({required BuildContext context,required String header, required String message, String? buttonText}) {
+  static void showErrorDialog(
+      {required BuildContext context,
+      required String header,
+      required String message,
+      String? buttonText}) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -392,7 +450,7 @@ class UiHelper{
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: (buttonText==null)? const Text('Okay'): Text(buttonText),
+            child: (buttonText == null) ? const Text('Okay') : Text(buttonText),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -402,7 +460,26 @@ class UiHelper{
     );
   }
 
-  static void showSuccessDialog({required BuildContext context,required String header, required String message, String? buttonText,Function? buttonFunc}) {
+  static void showSnackBar({required BuildContext context,required String message}) {
+    final snackBar = SnackBar(
+      backgroundColor: Color(0xff8BBA50),
+      content: Text(message),
+      /*action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {
+          // Some code to undo the change.
+        },
+      ),*/
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static void showSuccessDialog(
+      {required BuildContext context,
+      required String header,
+      required String message,
+      String? buttonText,
+      Function? buttonFunc}) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -410,14 +487,13 @@ class UiHelper{
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: (buttonText==null)? const Text('Okay'): Text(buttonText),
+            child: (buttonText == null) ? const Text('Okay') : Text(buttonText),
             onPressed: () {
-              if(buttonFunc !=null){
+              if (buttonFunc != null) {
                 buttonFunc.call();
-              }else{
+              } else {
                 Navigator.of(ctx).pop();
               }
-
             },
           )
         ],
@@ -425,12 +501,19 @@ class UiHelper{
     );
   }
 
-  static void showYesNoDialog({required BuildContext context,required String title, required String message,required String yesButtonText,required String noButtonText,required Function yesButtonOperation,required Function noButtonOperation}) async{
+  static void showYesNoDialog(
+      {required BuildContext context,
+      required String title,
+      required String message,
+      required String yesButtonText,
+      required String noButtonText,
+      required Function yesButtonOperation,
+      required Function noButtonOperation}) async {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title:  Text(title),
-        content:  Text(message),
+        title: Text(title),
+        content: Text(message),
         actions: <Widget>[
           TextButton(
             onPressed: () => yesButtonOperation.call(),
@@ -445,12 +528,19 @@ class UiHelper{
     );
   }
 
-  static void showYesNoDialogWithContent({required BuildContext context,required String title,required Widget content,required String yesButtonText,required String noButtonText,required Function yesButtonOperation,required Function noButtonOperation}) async{
+  static void showYesNoDialogWithContent(
+      {required BuildContext context,
+      required String title,
+      required Widget content,
+      required String yesButtonText,
+      required String noButtonText,
+      required Function yesButtonOperation,
+      required Function noButtonOperation}) async {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title:  Text(title),
-        content:  content,
+        title: Text(title),
+        content: content,
         actions: <Widget>[
           TextButton(
             onPressed: () => yesButtonOperation.call(),
@@ -464,5 +554,4 @@ class UiHelper{
       ),
     );
   }
-
 }

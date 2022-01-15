@@ -4,6 +4,7 @@ import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_alert.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/date_format_helper.dart';
@@ -64,7 +65,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CustomButton(buttonText: 'Edit', onPressedFunc: ()=>editButtonFunc(), buttonType: ButtonType.TEXT),
+                            CustomButton(buttonText: 'Edit', onPressedFunc: ()=>editButtonFunc(widget.data), buttonType: ButtonType.TEXT),
                             /*CustomButton(buttonText: 'Invite', onPressedFunc: ()=>
                                 UiHelper.showYesNoDialogWithContent(context: context, title: 'Invite', content: UiHelper.getTextField("Invite Email", "Please Enter a Email", 'Please enter email',_editEventData, 'email',true), yesButtonText: 'Invite',
                                     noButtonText: 'Cancel', yesButtonOperation: ()=>inviteButtonFunc(), noButtonOperation: ()=>{}),
@@ -90,8 +91,8 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
 
   }
 
-  void editButtonFunc(){
-
+  void editButtonFunc(EventResponse data){
+    Navigator.of(context).pushReplacementNamed(RoutesName.CREATE_EVENT, arguments: data);
   }
 
   void inviteButtonFunc(){

@@ -13,7 +13,6 @@ import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart
 import 'package:project_menschen_fahren/widgets/components/password_field.dart';
 import 'package:provider/provider.dart';
 
-
 /// Stateful widget that represents the login page.
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -32,15 +31,13 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
   /// Map containing the details from the login form.
   final Map<String, String> _authData = {
     'firstName': '',
-    'lastName':'',
-    'username':'',
+    'lastName': '',
+    'username': '',
     'email': '',
     'password': '',
   };
 
-
   _RegistrationPageState() : super(false);
-
 
   @override
   String getTitle(BuildContext context) {
@@ -75,54 +72,88 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
 
     UserService service = UserService();
 
-    if(_authData['password'] != _authData['confirmPassword']){
-      UiHelper.showErrorDialog(context: context, header: 'Error!!', message: 'Password does not match.');
+    if (_authData['password'] != _authData['confirmPassword']) {
+      UiHelper.showErrorDialog(
+          context: context,
+          header: 'Error!!',
+          message: 'Password does not match.');
       return;
     }
 
-    try{
+    try {
       UserResponse user = await service.createUser(_authData);
       print(user);
       Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
-    }catch(error){
-      UiHelper.showErrorDialog(context: context, header: 'Error!!', message: error.toString());
+    } catch (error) {
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error!!', message: error.toString());
     }
-
-
-
-
   }
 
   @override
   Widget buildContent(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Stack(
-            children: <Widget>[
-              SingleChildScrollView(
-                child:Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30.0),
-                      ),
-                      UiHelper.getTextField("First Name", "Enter First Name", 'Please Enter First Name',_authData, 'firstName',true),
-                      UiHelper.getTextField("Last Name", "Enter Last Name", 'Please Enter Last Name', _authData,'lastName',true),
-                      UiHelper.getTextField("User Name", "Enter User name", 'Please Enter Username', _authData,'username',true),
-                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id',_authData, 'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
-                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password', formKey: 'password',dataForm: _authData,validationMessage: 'Enter your Password.'),
-                      CustomPasswordField(labelText: 'Rewrite Password', hintText: 'Rewrite your Password', formKey: 'confirmPassword',dataForm: _authData,validationMessage: 'Rewrite your Password.'),
-                      CustomButton(buttonText: 'Signup', onPressedFunc: ()=>_pressedRegister(context), buttonType: ButtonType.OUTLINE)
-                    ],
+        body: Stack(children: <Widget>[
+          SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30.0),
                   ),
-                ),
-              )
-            ]
-        )
-    );
+                  UiHelper.getTextField(
+                      labelText: "First Name",
+                      hintText: "Enter First Name",
+                      validatorMessage: 'Please Enter First Name',
+                      dataForm: _authData,
+                      formKey: 'firstName',
+                      validate: true),
+                  UiHelper.getTextField(
+                      labelText: "Last Name",
+                      hintText: "Enter Last Name",
+                      validatorMessage: 'Please Enter Last Name',
+                      dataForm: _authData,
+                      formKey: 'lastName',
+                      validate: true),
+                  UiHelper.getTextField(
+                      labelText: "User Name",
+                      hintText: "Enter User name",
+                      validatorMessage: 'Please Enter Username',
+                      dataForm: _authData,
+                      formKey: 'username',
+                      validate: true),
+                  UiHelper.getTextFieldWithRegExValidation(
+                      labelText: 'Email Id',
+                      hintText: 'Enter Email Id',
+                      validatorMessage: 'Please Enter Email Id',
+                      dataForm: _authData,
+                      formKey: 'email',
+                      regEx: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]",
+                      regExValidationErrorMessage: 'Invalid Email',
+                      validate: true),
+                  CustomPasswordField(
+                      labelText: 'Password',
+                      hintText: 'Enter your Password',
+                      formKey: 'password',
+                      dataForm: _authData,
+                      validationMessage: 'Enter your Password.'),
+                  CustomPasswordField(
+                      labelText: 'Rewrite Password',
+                      hintText: 'Rewrite your Password',
+                      formKey: 'confirmPassword',
+                      dataForm: _authData,
+                      validationMessage: 'Rewrite your Password.'),
+                  CustomButton(
+                      buttonText: 'Signup',
+                      onPressedFunc: () => _pressedRegister(context),
+                      buttonType: ButtonType.OUTLINE)
+                ],
+              ),
+            ),
+          )
+        ]));
   }
 }
-
-

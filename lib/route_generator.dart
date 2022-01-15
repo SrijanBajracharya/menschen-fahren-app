@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:project_menschen_fahren/logger.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
+import 'package:project_menschen_fahren/models/user_profile_response.dart';
 import 'package:project_menschen_fahren/pages/ac_status.dart';
 import 'package:project_menschen_fahren/pages/login_page.dart';
 import 'package:project_menschen_fahren/pages/edit_profile.dart';
@@ -100,10 +101,17 @@ class RouteGenerator {
         );
 
       case RoutesName.CREATE_EVENT:
-        return MaterialPageRoute(
-            builder: (_) => CreateEvent(),
-            settings: const RouteSettings(name: RoutesName.CREATE_EVENT)
-        );
+        if(args is EventResponse) {
+          return MaterialPageRoute(
+              builder: (_) => CreateEvent(isEditEvent: false, data:args,),
+              settings: const RouteSettings(name: RoutesName.CREATE_EVENT,)
+          );
+        }else{
+          return MaterialPageRoute(
+              builder: (_) => CreateEvent(isEditEvent: false),
+              settings: const RouteSettings(name: RoutesName.CREATE_EVENT,)
+          );
+        }
 
       case RoutesName.AC_STATUS:
         if (args is String) {
@@ -130,10 +138,18 @@ class RouteGenerator {
         );
 
       case RoutesName.EDIT_PROFILE:
-        return MaterialPageRoute(
-            builder: (_) => EditProfile(),
-            settings: const RouteSettings(name: RoutesName.EDIT_PROFILE)
-        );
+        if(args is UserProfileResponse) {
+          return MaterialPageRoute(
+              builder: (_) => EditProfile(userProfile: args,),
+              settings: const RouteSettings(name: RoutesName.EDIT_PROFILE)
+          );
+        }else{
+          return MaterialPageRoute(
+              builder: (_) => EditProfile(),
+              settings: const RouteSettings(name: RoutesName.EDIT_PROFILE)
+          );
+        }
+
 
       default:
         return _errorRoute();

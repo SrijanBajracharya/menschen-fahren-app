@@ -39,10 +39,9 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     return LoginPage.TITLE;
   }
 
-  void _register(BuildContext context){
+  void _register(BuildContext context) {
     Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_REGISTRATION);
   }
-
 
   /// Handling the press on the login button.
   Future<void> _pressedLogin(BuildContext context) async {
@@ -59,8 +58,7 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     try {
       final canLogin =
           await Provider.of<AuthenticationTokenProvider>(context, listen: false)
-              .login(_authData['email']!,
-                  _authData['password']!);
+              .login(_authData['email']!, _authData['password']!);
       if (canLogin) {
         Navigator.of(context).pushReplacementNamed(RoutesName.MAIN_PAGE);
       }
@@ -79,39 +77,56 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password.';
       }
-      UiHelper.showErrorDialog(context: context, header: 'Error', message: errorMessage);
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error', message: errorMessage);
     } catch (error) {
       const errorMessage =
           'Could not authenticate you. Please try again later.';
-      UiHelper.showErrorDialog(context: context, header: 'Error', message: errorMessage);
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error', message: errorMessage);
     }
   }
 
   @override
   Widget buildContent(BuildContext context) {
     return Scaffold(
-            backgroundColor: Colors.white,
-            body: Stack(
-            children: <Widget>[
-              SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 30.0),
-                      ),
-
-                      UiHelper.getTextFieldWithRegExValidation('Email Id', 'Enter Email Id', 'Please Enter Email Id', _authData,'email', "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]", 'Invalid Email', true),
-                      CustomPasswordField(labelText: 'Password', hintText: 'Enter your Password',formKey: 'password',dataForm: _authData, validationMessage: 'Enter your Password.'),
-                      CustomButton(buttonText: 'Login', onPressedFunc: ()=>_pressedLogin(context), buttonType: ButtonType.OUTLINE),
-                      CustomButton(buttonText: 'Register', onPressedFunc: ()=>_register(context), buttonType: ButtonType.TEXT)
-                    ],
-                  ),
-                )
-              )
-            ])
-    );
+        backgroundColor: Colors.white,
+        body: Stack(children: <Widget>[
+          SingleChildScrollView(
+              child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                ),
+                UiHelper.getTextFieldWithRegExValidation(
+                    labelText: 'Email Id',
+                    hintText: 'Enter Email Id',
+                    validatorMessage: 'Please Enter Email Id',
+                    dataForm: _authData,
+                    formKey: 'email',
+                    regEx: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]",
+                    regExValidationErrorMessage: 'Invalid Email',
+                    validate: true),
+                CustomPasswordField(
+                    labelText: 'Password',
+                    hintText: 'Enter your Password',
+                    formKey: 'password',
+                    dataForm: _authData,
+                    validationMessage: 'Enter your Password.'),
+                CustomButton(
+                    buttonText: 'Login',
+                    onPressedFunc: () => _pressedLogin(context),
+                    buttonType: ButtonType.OUTLINE),
+                CustomButton(
+                    buttonText: 'Register',
+                    onPressedFunc: () => _register(context),
+                    buttonType: ButtonType.TEXT)
+              ],
+            ),
+          ))
+        ]));
   }
 }

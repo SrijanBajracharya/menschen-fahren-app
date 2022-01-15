@@ -4,11 +4,11 @@ import 'package:project_menschen_fahren/models/button_type.dart';
 
 class CustomButton extends StatelessWidget {
 
-  String buttonText;
+  final String buttonText;
 
-  Function onPressedFunc;
+  final Function onPressedFunc;
 
-  ButtonType buttonType;
+  final ButtonType buttonType;
 
   CustomButton({Key? key, required this.buttonText, required this.onPressedFunc, required this.buttonType}) : super(key: key);
 
@@ -34,7 +34,6 @@ class CustomButton extends StatelessWidget {
   Widget getOutlineButtonField(Function onPressedFunc){
     return OutlinedButton(
         onPressed: () {
-          print('im pressed');
           onPressedFunc.call();
         },
         child:getBody()
@@ -44,7 +43,6 @@ class CustomButton extends StatelessWidget {
   Widget getTextButtonField(Function onPressedFunc){
     return TextButton(
       onPressed: () {
-        print('im pressed');
         onPressedFunc.call();
       },
       child:getTextButtonBody()
@@ -57,8 +55,13 @@ class CustomButton extends StatelessWidget {
       EdgeInsets.symmetric(vertical: 10, horizontal: 40),
       decoration: BoxDecoration(
         color: Color(0xff8BBA50),
-        borderRadius:
-        BorderRadius.all(Radius.circular(5.0)),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        border: Border(
+          top: BorderSide.none,
+          bottom: BorderSide.none,
+          left: BorderSide.none,
+          right: BorderSide.none
+        )
       ),
       child: Text(
         buttonText,

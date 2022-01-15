@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/user_profile_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'package:project_menschen_fahren/providers/user_service.dart';
 import 'package:project_menschen_fahren/routes_name.dart';
+import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +86,7 @@ class _ProfileState extends StatefulBasePage<Profile> {
                       children: [
                         UiHelper.getCircleAvatarWithCameraDefault(assetName: 'assets/images/nepal.jpg',onIconClick: ()=>onCameraPress() ),
                         UiHelper.buildCenterTitle(title: '${userProfile.user.firstName} ${userProfile.user.lastName}'),
-                        UiHelper.buildButtonDefault(buttonText: 'Edit Profile', onPressedFunc: ()=> onEditPress()),
+                        CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.OUTLINE),
                         UiHelper.buildDivider(),
                         UiHelper.buildIconInfo(Icons.transgender,null,'29 M'),
                         UiHelper.buildIconInfo(Icons.work, 'Works at','Achievers'),
@@ -139,8 +141,9 @@ class _ProfileState extends StatefulBasePage<Profile> {
     }
   }
 
-  void onEditPress(){
-    Navigator.pushReplacementNamed(context, RoutesName.EDIT_PROFILE);
+  void onEditPress(UserProfileResponse userProfile){
+    print("I am pressed");
+    Navigator.pushReplacementNamed(context, RoutesName.EDIT_PROFILE,arguments: userProfile);
   }
 
   void onCameraPress(){

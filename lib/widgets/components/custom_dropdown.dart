@@ -9,11 +9,13 @@ class CustomDropdown extends StatefulWidget {
 
   final List<String> dropdownItems;
 
-  bool? validate;
+  final bool? validate;
 
-  Map<String, String> dataForm;
+  final Map<String, String> dataForm;
 
-  String formKey;
+  final String formKey;
+
+  final String? initValue;
 
   CustomDropdown(
       {Key? key,
@@ -22,7 +24,8 @@ class CustomDropdown extends StatefulWidget {
       required this.dropdownItems,
       required this.dataForm,
       required this.formKey,
-      this.validate})
+      this.validate,
+      this.initValue})
       : super(key: key);
 
   @override
@@ -30,7 +33,6 @@ class CustomDropdown extends StatefulWidget {
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  String? selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   /// Populates a dropdown values.
   Widget _buildDropdown() {
+    String? selectedValue ;
     return ButtonTheme(
       materialTapTargetSize: MaterialTapTargetSize.padded,
       child: DropdownButtonFormField(
@@ -59,11 +62,14 @@ class _CustomDropdownState extends State<CustomDropdown> {
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white))),
-        onChanged: (String? newValue) {
-          //setState(() {
-            selectedValue = newValue!;
-          //});
-        },
+        /*onChanged: (String? newValue) {
+          setState(() {
+            selectedValue = (widget.initValue != null)? widget.initValue: newValue!;
+          });
+        },*/
+        onChanged: (String? selectedItem) => setState(() {
+          selectedValue = (widget.initValue!=null)? widget.initValue: selectedItem;
+        }),
         onSaved: (String? value) {
           widget.dataForm[widget.formKey] = value!;
         },
