@@ -25,6 +25,7 @@ class RegistrationPage extends StatefulWidget {
 
 /// State of the LoginPage.
 class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
+  _RegistrationPageState() : super(showHamburgerMenu: false,showBottomNavigation: false,showNotification: false);
   /// Key of the form.
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -37,7 +38,7 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
     'password': '',
   };
 
-  _RegistrationPageState() : super(false);
+
 
   @override
   String getTitle(BuildContext context) {
@@ -60,6 +61,10 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
         ],
       ),
     );
+  }
+
+  void _pressedLogin(BuildContext context){
+    Navigator.pushReplacementNamed(context, RoutesName.ROUTE_LOGIN);
   }
 
   /// Handling the press on the login button.
@@ -149,7 +154,11 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
                   CustomButton(
                       buttonText: 'Signup',
                       onPressedFunc: () => _pressedRegister(context),
-                      buttonType: ButtonType.OUTLINE)
+                      buttonType: ButtonType.OUTLINE),
+                  CustomButton(
+                      buttonText: 'Login',
+                      onPressedFunc: () => _pressedLogin(context),
+                      buttonType: ButtonType.TEXT)
                 ],
               ),
             ),

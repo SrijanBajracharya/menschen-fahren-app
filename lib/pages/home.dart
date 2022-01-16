@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends StatefulBasePage<Home> {
-  _HomeState() : super(true);
+  _HomeState() : super(showHamburgerMenu: false,currentIndex: 0);
 
   @override
   Widget buildContent(BuildContext context) {
@@ -147,7 +147,6 @@ class _EventListState extends State<EventList> {
                               overflow: TextOverflow.ellipsis,
                               softWrap: true,
                               style: TextStyle(
-                                  fontFamily: Constants.PRIMARY_FONT_FAMILY,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -170,7 +169,6 @@ class _EventListState extends State<EventList> {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: TextStyle(
-                                fontFamily: Constants.PRIMARY_FONT_FAMILY,
                                 fontSize: 18,
                               ),
                             ),
@@ -182,7 +180,6 @@ class _EventListState extends State<EventList> {
                     title: Text(
                       'Events Info: ',
                       style: TextStyle(
-                          fontFamily: Constants.PRIMARY_FONT_FAMILY,
                           fontWeight: FontWeight.bold),
                     ),
                     subtitle: Row(
@@ -192,14 +189,13 @@ class _EventListState extends State<EventList> {
                           'Event Date: ${DateHelper.formatDate(data.startDate)}',
                           style: TextStyle(
                             fontSize: 14,
-                            fontFamily: Constants.PRIMARY_FONT_FAMILY,
                           ),
                         ),
                         Text(
                           'Group: ${data.numberOfParticipants}',
                           style: TextStyle(
                               fontSize: 14,
-                              fontFamily: Constants.PRIMARY_FONT_FAMILY),
+                          ),
                         )
                       ],
                     ),

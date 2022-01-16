@@ -20,46 +20,6 @@ class AppDrawer extends StatelessWidget {
           ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Events'),
-            onTap: () {
-              if( ModalRoute.of(context)!.settings.name != RoutesName.MAIN_PAGE){
-                Navigator.pushReplacementNamed(context, RoutesName.MAIN_PAGE);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('My favorite'),
-            onTap: () {
-              if( ModalRoute.of(context)!.settings.name != RoutesName.FAVORITES){
-                Navigator.pushReplacementNamed(context, RoutesName.FAVORITES);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('Profile'),
-            onTap: () {
-              if( ModalRoute.of(context)!.settings.name != RoutesName.PROFILE){
-                Navigator.pushReplacementNamed(context, RoutesName.PROFILE);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.favorite),
-            title: const Text('Create Event'),
-            onTap: () {
-              if( ModalRoute.of(context)!.settings.name != RoutesName.CREATE_EVENT){
-                Navigator.pushReplacementNamed(context, RoutesName.CREATE_EVENT);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Logout'),
             onTap: () {

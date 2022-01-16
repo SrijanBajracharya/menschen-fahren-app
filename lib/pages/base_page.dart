@@ -3,11 +3,15 @@ import 'package:project_menschen_fahren/models/notification_data.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/pages/create_event_page.dart';
+import 'package:project_menschen_fahren/pages/home.dart';
+import 'package:project_menschen_fahren/pages/profile.dart';
+import 'package:project_menschen_fahren/route_generator.dart';
+import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/app_drawer.dart';
 import 'package:project_menschen_fahren/widgets/components/notification.dart';
 
 abstract class BasePage extends StatelessWidget {
-
   const BasePage({Key? key}) : super(key: key);
 
   @override
@@ -17,7 +21,8 @@ abstract class BasePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(getTitle(context)),
       ),
-      body: buildContent(context),);
+      body: buildContent(context),
+    );
   }
 
   Widget buildContent(BuildContext context);
@@ -26,71 +31,107 @@ abstract class BasePage extends StatelessWidget {
 }
 
 abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
-
   bool showHamburgerMenu;
-  StatefulBasePage(this.showHamburgerMenu) : super();
+  int? currentIndex;
+  bool?  showBottomNavigation = true;
+  bool? showNotification = true;
+  StatefulBasePage({required this.showHamburgerMenu,this.showBottomNavigation,this.showNotification, this.currentIndex})
+      : super();
+
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  void _openDrawer()=>_drawerKey.currentState!.openDrawer();
+  void _openDrawer() => _drawerKey.currentState!.openDrawer();
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      endDrawer: AppDrawer(),
-      //endDrawer:showHamburgerMenu? const AppDrawer(): null,
+      endDrawer: showHamburgerMenu?AppDrawer():null,
       appBar: AppBar(
         backgroundColor: Color(0xff8BBA50),
-        toolbarTextStyle: TextStyle(
-          fontFamily: Constants.PRIMARY_FONT_FAMILY
-        ),
-        titleTextStyle: TextStyle(
-          fontFamily: Constants.PRIMARY_FONT_FAMILY
-        ),
+        toolbarTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
+        titleTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
         title: Text(
           getTitle(context),
-          style: TextStyle(
-            fontFamily: Constants.PRIMARY_FONT_FAMILY
-          ),
+          style: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
         ),
-        /*actions: <Widget>[
-          IconButton(icon: Icon(Icons.notifications_none), onPressed: () => openDialog()),
+        actions: (showNotification==null || showNotification==true) ? <Widget>[
+          IconButton(
+              icon: Icon(Icons.notifications_none),
+              onPressed: () => openDialog()),
           //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
-        ],*/
+        ]:null,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff8BBA50),
-        selectedItemColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: TextStyle(
-          fontFamily: Constants.PRIMARY_FONT_FAMILY
+      bottomNavigationBar: (showBottomNavigation==null || showBottomNavigation==true) ? _showBottomNav(): null,
+      body: buildContent(context),
+    );
+  }
+
+  Widget _showBottomNav() {
+    return BottomNavigationBar(
+      //backgroundColor: Color(0xff8BBA50),
+      selectedItemColor: Color(0xff8BBA50),
+      type: BottomNavigationBarType.shifting,
+      onTap: _onTap,
+      currentIndex:
+          (this.currentIndex != null) ? this.currentIndex! : _selectedIndex,
+      unselectedItemColor: Colors.black87,
+      elevation: 15,
+      backgroundColor: Color(0xffEFEFEF),
+      selectedFontSize: 16,
+      unselectedFontSize: 14,
+      selectedIconTheme: IconThemeData(size: 30),
+      unselectedIconTheme: IconThemeData(size: 26),
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.house),
+          label: 'Home',
         ),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.house),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            label: 'My Event',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.create),
-            label: 'Create',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-      ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: 'Favorites',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.event),
+          label: 'My Event',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.create),
+          label: 'Create',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Profile',
+        ),
+      ],
+    );
+  }
 
-      body: buildContent(context),);
-
+  // _onTap function
+  void _onTap(int index) {
+    ///NOTE: this logic needs to change because right now, the navigator is used, and the page pass the selected index. which is not the correct way. Need to recheck the named navigation logic
+    if (currentIndex != null && currentIndex != index) {
+      // Manage your route names here
+      switch (index) {
+        case 1:
+          Navigator.pushReplacementNamed(context, RoutesName.FAVORITES);
+          break;
+        case 2:
+          Navigator.pushReplacementNamed(context, RoutesName.MY_EVENT);
+          break;
+        case 3:
+          Navigator.pushReplacementNamed(context, RoutesName.CREATE_EVENT);
+          break;
+        case 4:
+          Navigator.pushReplacementNamed(context, RoutesName.PROFILE);
+          break;
+        case 0:
+        default:
+          Navigator.pushReplacementNamed(context, RoutesName.MAIN_PAGE);
+          break;
+      }
+    }
   }
 
   Widget buildContent(BuildContext context);
@@ -98,18 +139,21 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   String getTitle(BuildContext context);
 
   void openDialog() {
-
     List<UserNotification> userNotifications = <UserNotification>[];
-    userNotifications.add(UserNotification(user: 'Srijan', eventName: 'Pokhara Trip', requestToJoin: true));
-    userNotifications.add(UserNotification(user: 'John', eventName: 'Japan Trip', requestToJoin: false));
+    userNotifications.add(UserNotification(
+        user: 'Srijan', eventName: 'Pokhara Trip', requestToJoin: true));
+    userNotifications.add(UserNotification(
+        user: 'John', eventName: 'Japan Trip', requestToJoin: false));
 
-    NotificationData notificationData = NotificationData(notifications: userNotifications);
+    NotificationData notificationData =
+        NotificationData(notifications: userNotifications);
 
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return NotificationDialog(notificationData: NotificationData(notifications: userNotifications));
+          return NotificationDialog(
+              notificationData:
+                  NotificationData(notifications: userNotifications));
         },
         fullscreenDialog: true));
   }
-
 }

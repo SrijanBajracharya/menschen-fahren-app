@@ -8,7 +8,7 @@ class MyEventsPage extends StatefulWidget {
 }
 
 class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
-  _MyEventsPage() : super(true);
+  _MyEventsPage() : super(showHamburgerMenu: false, currentIndex: 2);
 
   @override
   Widget buildContent(BuildContext context) {

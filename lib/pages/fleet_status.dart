@@ -18,7 +18,7 @@ class FleetStatus extends StatefulWidget {
 }
 
 class _FleetStatusState extends StatefulBasePage<FleetStatus> {
-  _FleetStatusState() : super(true);
+  _FleetStatusState() : super(showHamburgerMenu: true);
 
   int updateCount = 0;
 

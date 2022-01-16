@@ -43,17 +43,13 @@ class RouteGenerator {
           settings: const RouteSettings(name: RoutesName.ROUTE_REGISTRATION)
       );
     }else{
-      return _generateRoute(settings);
+      return generateRoute(settings);
     }
   }
 
   static Widget _navigate(BuildContext ctx, AsyncSnapshot snapshot,RouteSettings settings){
     if(snapshot.hasData) {
-      if(snapshot.data){
-        return _generateRoute(settings).builder.call(ctx);
-      }else{
-        return LoginPage();
-      }
+        return generateRoute(settings).builder.call(ctx);
     } else if (snapshot.hasError) {
       return LoginPage();
     } else {
@@ -62,7 +58,7 @@ class RouteGenerator {
   }
 
   /// Routes to different Pages based on the name.
-  static MaterialPageRoute _generateRoute(RouteSettings settings) {
+  static MaterialPageRoute generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
       case RoutesName.ROUTE_DEFAULT:
@@ -93,7 +89,11 @@ class RouteGenerator {
         }
         break;
 
-
+      case RoutesName.MY_EVENT:
+        return MaterialPageRoute(
+            builder: (_) => MyEventsPage(),
+            settings: const RouteSettings(name: RoutesName.MY_EVENT)
+        );
       case RoutesName.DELAYS:
         return MaterialPageRoute(
             builder: (_) => Delays(true),

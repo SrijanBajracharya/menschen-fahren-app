@@ -32,7 +32,7 @@ class _LoginPageState extends StatefulBasePage<LoginPage> {
     'password': '',
   };
 
-  _LoginPageState() : super(false);
+  _LoginPageState() : super(showHamburgerMenu: false,showBottomNavigation: false,showNotification: false);
 
   @override
   String getTitle(BuildContext context) {

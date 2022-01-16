@@ -20,7 +20,7 @@ class MyFavorite extends StatefulWidget {
 }
 
 class _MyFavoriteState extends StatefulBasePage<MyFavorite> {
-  _MyFavoriteState() : super(true);
+  _MyFavoriteState() : super(showHamburgerMenu: false,currentIndex: 1);
 
   @override
   Widget buildContent(BuildContext context) {
@@ -148,7 +148,6 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
                             child: Text(
                               data.event.name,
                               style: TextStyle(
-                                  fontFamily: Constants.PRIMARY_FONT_FAMILY,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -171,7 +170,6 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
                             style: TextStyle(
-                              fontFamily: Constants.PRIMARY_FONT_FAMILY,
                               fontSize: 18,
                             ),
                           ),
@@ -183,7 +181,6 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
                     title: Text(
                       'Events Info: ',
                       style: TextStyle(
-                          fontFamily: Constants.PRIMARY_FONT_FAMILY,
                           fontWeight: FontWeight.bold),
                     ),
                     subtitle: Row(
@@ -193,13 +190,13 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
                           'Event Date: ${DateHelper.formatDate(data.event.startDate)}',
                           style: TextStyle(
                               fontSize: 14,
-                              fontFamily: Constants.PRIMARY_FONT_FAMILY),
+                          ),
                         ),
                         Text(
                           'Group: ${data.event.numberOfParticipants}',
                           style: TextStyle(
                               fontSize: 14,
-                              fontFamily: Constants.PRIMARY_FONT_FAMILY),
+                          ),
                         )
                       ],
                     ),

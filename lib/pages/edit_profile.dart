@@ -18,7 +18,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends StatefulBasePage<EditProfile> {
-  _EditProfileState() : super(true);
+  _EditProfileState() : super(showHamburgerMenu: false);
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final Map<String, String> _editProfileData = {

@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
@@ -20,7 +21,7 @@ class EventDescription extends StatefulWidget {
 }
 
 class _EventDescriptionState extends StatefulBasePage<EventDescription> {
-  _EventDescriptionState() : super(true);
+  _EventDescriptionState() : super(showHamburgerMenu: false,currentIndex: 0);
 
   final Map<String, String> _editEventData = {
     'aboutMe': '',
@@ -115,7 +116,10 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
         builder: (BuildContext context) {
           return AlertDialog(
             scrollable: true,
-            title: Text('Invite'),
+            title: Text(
+              'Invite',
+              style: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
+            ),
             content: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(

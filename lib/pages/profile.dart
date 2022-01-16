@@ -17,7 +17,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends StatefulBasePage<Profile> {
-  _ProfileState() : super(true);
+  _ProfileState() : super(showHamburgerMenu: true, currentIndex: 4,showNotification: false);
 
   Future<UserProfileResponse>? _userProfile;
 

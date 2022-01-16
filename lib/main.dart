@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_menschen_fahren/config/app_config.dart';
+import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/providers/aircraft_provider.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'package:project_menschen_fahren/providers/maint_log_provider.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                   primarySwatch: Colors.blue,
                   scaffoldBackgroundColor: Colors.grey.shade300,
-                  backgroundColor: Color(0xFFFBFBFB)
+                  backgroundColor: Color(0xFFFBFBFB),
+                  fontFamily: Constants.PRIMARY_FONT_FAMILY
               ),
               //initialRoute: RoutesName.ROUTE_REGISTRATION,
               onGenerateRoute: (RouteSettings settings) =>

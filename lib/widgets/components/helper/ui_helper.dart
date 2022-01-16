@@ -42,7 +42,7 @@ class UiHelper {
                   padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                   child: Text(
                     label,
-                    style: TextStyle(fontSize: 16, fontFamily: Constants.PRIMARY_FONT_FAMILY),
+                    style: TextStyle(fontSize: 16, ),
                   ),
                 )
               : Text(' '),
@@ -52,7 +52,6 @@ class UiHelper {
                 text,
                 style: TextStyle(
                     fontSize: 16,
-                    fontFamily: Constants.PRIMARY_FONT_FAMILY,
                     fontWeight: FontWeight.bold
                 ),
               ))
@@ -67,7 +66,7 @@ class UiHelper {
       padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       child: Text(
         descText,
-        style: TextStyle(fontSize: 18, fontFamily: Constants.PRIMARY_FONT_FAMILY),
+        style: TextStyle(fontSize: 18,),
         textAlign: TextAlign.justify,
       ),
     );
@@ -185,7 +184,6 @@ class UiHelper {
         child: Text(
           title,
           style: TextStyle(
-            fontFamily: Constants.PRIMARY_FONT_FAMILY,
             fontWeight: FontWeight.bold,
             fontSize: 24.0,
           ),
@@ -201,7 +199,6 @@ class UiHelper {
       child: Text(
         title,
         style: TextStyle(
-          fontFamily: Constants.PRIMARY_FONT_FAMILY,
           fontWeight: FontWeight.bold,
           fontSize: 24.0,
         ),

@@ -25,7 +25,7 @@ class CreateEvent extends StatefulWidget {
 }
 
 class _CreateEventState extends StatefulBasePage<CreateEvent> {
-  _CreateEventState() : super(true);
+  _CreateEventState() : super(showHamburgerMenu: false,currentIndex: 3);
 
   String? dropdownValue;
 
