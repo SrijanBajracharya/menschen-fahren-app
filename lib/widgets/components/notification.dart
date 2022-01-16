@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/notification_data.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
@@ -27,7 +28,7 @@ class NotificationDialog extends StatelessWidget {
   }
 
   Widget buildNotificationItem(List<UserNotification> userNotification) {
-    TextStyle defaultStyle = TextStyle(color: Colors.black, fontSize: 16.0);
+    TextStyle defaultStyle = TextStyle(color: Colors.black, fontSize: 16.0,fontFamily: Constants.PRIMARY_FONT_FAMILY);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -44,7 +45,7 @@ class NotificationDialog extends StatelessWidget {
                       text: TextSpan(
                         style: defaultStyle,
                         children: <TextSpan>[
-                          TextSpan(text: userNotification[index].user, style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(text: userNotification[index].user, style: TextStyle(fontWeight: FontWeight.bold,)),
                           TextSpan(text: ' wants to join the event '),
                           TextSpan(text: userNotification[index].eventName, style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
