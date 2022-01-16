@@ -11,7 +11,6 @@ import 'package:project_menschen_fahren/widgets/components/helper/date_format_he
 import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
 
 class EventDescription extends StatefulWidget {
-
   final EventResponse data;
 
   EventDescription({Key? key, required this.data}) : super(key: key);
@@ -26,7 +25,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
   final Map<String, String> _editEventData = {
     'aboutMe': '',
     'hobbies': '',
-    'descText':''
+    'descText': ''
   };
 
   @override
@@ -34,116 +33,123 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
     return SingleChildScrollView(
         child: Center(
             child: Padding(
-              padding: EdgeInsets.only(top: 0),
-              child: Stack(
-                alignment: AlignmentDirectional.topCenter,
-                children: [
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        UiHelper.buildTitle(title: widget.data.name),
-                        UiHelper.buildDescriptionBlock(descText: widget.data.description),
-
-                        UiHelper.buildDivider(),
-                        UiHelper.buildTitle(title: 'Trip Info'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            UiHelper.buildIconInfo(FontAwesomeIcons.calendar, null, widget.data.eventType.name),
-                            UiHelper.buildIconInfo(FontAwesomeIcons.users,null,widget.data.numberOfParticipants.toString()),
-                          ],
-                        ),
-                        UiHelper.buildIconInfo(FontAwesomeIcons.calendarAlt, null, '${DateHelper.formatDate(widget.data.startDate)} - ${DateHelper.formatDate(widget.data.endDate)}'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            UiHelper.buildIconInfo(FontAwesomeIcons.mapMarked, null, '${widget.data.location}' + ', ${widget.data.countryCode}'),
-                          ],
-                        ),
-                        UiHelper.buildDivider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomButton(buttonText: 'Edit', onPressedFunc: ()=>editButtonFunc(widget.data), buttonType: ButtonType.TEXT),
-                            /*CustomButton(buttonText: 'Invite', onPressedFunc: ()=>
+      padding: EdgeInsets.only(top: 0),
+      child: Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: [
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                UiHelper.buildTitle(title: widget.data.name),
+                UiHelper.buildDescriptionBlock(
+                    descText: widget.data.description),
+                UiHelper.buildDivider(),
+                UiHelper.buildTitle(title: 'Trip Info'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    UiHelper.buildIconInfo(FontAwesomeIcons.calendar, null,
+                        widget.data.eventType.name),
+                    UiHelper.buildIconInfo(FontAwesomeIcons.users, null,
+                        widget.data.numberOfParticipants.toString()),
+                  ],
+                ),
+                UiHelper.buildIconInfo(FontAwesomeIcons.calendarAlt, null,
+                    '${DateHelper.formatDate(widget.data.startDate)} - ${DateHelper.formatDate(widget.data.endDate)}'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    UiHelper.buildIconInfo(
+                        FontAwesomeIcons.mapMarked,
+                        null,
+                        '${widget.data.location}' +
+                            ', ${widget.data.countryCode}'),
+                  ],
+                ),
+                UiHelper.buildDivider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomButton(
+                        buttonText: 'Edit',
+                        onPressedFunc: () => editButtonFunc(widget.data),
+                        buttonType: ButtonType.ELEVATED),
+                    /*CustomButton(buttonText: 'Invite', onPressedFunc: ()=>
                                 UiHelper.showYesNoDialogWithContent(context: context, title: 'Invite', content: UiHelper.getTextField("Invite Email", "Please Enter a Email", 'Please enter email',_editEventData, 'email',true), yesButtonText: 'Invite',
                                     noButtonText: 'Cancel', yesButtonOperation: ()=>inviteButtonFunc(), noButtonOperation: ()=>{}),
                                 buttonType: ButtonType.TEXT),*/
-                            CustomButton(buttonText: 'Invite', onPressedFunc: ()=>showDialogWithFields(), buttonType: ButtonType.TEXT),
-                            CustomButton(buttonText: 'Request To Join', onPressedFunc: ()=>joinButtonFunc(), buttonType: ButtonType.TEXT),
-                          ],
-                        ),
-                      ],
-                    ),
-                    margin: EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                  ),
-                  //Positioned
-                ], //<Widget>[]
-              ), //Stack
-            )
-        )
-    );
-
+                    CustomButton(
+                        buttonText: 'Invite',
+                        onPressedFunc: () => showDialogWithFields(),
+                        buttonType: ButtonType.OUTLINE),
+                    //CustomButton(buttonText: 'Request', onPressedFunc: ()=>joinButtonFunc(), buttonType: ButtonType.OUTLINE),
+                  ],
+                ),
+              ],
+            ),
+            margin: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+          ),
+          //Positioned
+        ], //<Widget>[]
+      ), //Stack
+    )));
   }
 
-  void editButtonFunc(EventResponse data){
-    Navigator.of(context).pushReplacementNamed(RoutesName.CREATE_EVENT, arguments: data);
+  void editButtonFunc(EventResponse data) {
+    Navigator.of(context)
+        .pushReplacementNamed(RoutesName.CREATE_EVENT, arguments: data);
   }
 
-  void inviteButtonFunc(){
+  void inviteButtonFunc() {}
 
-  }
-
-  void joinButtonFunc(){
-
-  }
+  void joinButtonFunc() {}
 
   void showDialogWithFields() {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                scrollable: true,
-                title: Text('Invite'),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            icon: Icon(Icons.email),
-                          ),
-                          validator: (value) {
-                              if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value!)){
-                                return "Invalid email";
-                              }
-                              return null;
-                          },
-                          onSaved: (value) {
-
-                          },
-                        ),
-                      ],
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Text('Invite'),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        icon: Icon(Icons.email),
+                      ),
+                      validator: (value) {
+                        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                            .hasMatch(value!)) {
+                          return "Invalid email";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {},
                     ),
-                  ),
+                  ],
                 ),
-                actions: [
-                  TextButton(
-                      child: Text("Invite"),
-                      onPressed: () {
-                        // your code
-                      })
-                ],
-              );
-            });
+              ),
+            ),
+            actions: [
+              CustomButton(
+                  buttonText: 'Invite',
+                  onPressedFunc: () => _inviteFunc(),
+                  buttonType: ButtonType.TEXT)
+            ],
+          );
+        });
   }
+
+  void _inviteFunc() {}
 
   @override
   String getTitle(BuildContext context) {

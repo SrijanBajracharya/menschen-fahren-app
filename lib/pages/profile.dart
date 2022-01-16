@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/models/button_color.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/user_profile_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
@@ -86,7 +87,7 @@ class _ProfileState extends StatefulBasePage<Profile> {
                       children: [
                         UiHelper.getCircleAvatarWithCameraDefault(assetName: 'assets/images/nepal.jpg',onIconClick: ()=>onCameraPress() ),
                         UiHelper.buildCenterTitle(title: '${userProfile.user.firstName} ${userProfile.user.lastName}'),
-                        CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.OUTLINE),
+                        CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.ELEVATED,),
                         UiHelper.buildDivider(),
                         UiHelper.buildIconInfo(Icons.transgender,null,'29 M'),
                         UiHelper.buildIconInfo(Icons.work, 'Works at','Achievers'),

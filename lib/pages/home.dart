@@ -22,7 +22,6 @@ class _HomeState extends StatefulBasePage<Home> {
 
   @override
   Widget buildContent(BuildContext context) {
-
     return EventList();
   }
 
@@ -33,7 +32,6 @@ class _HomeState extends StatefulBasePage<Home> {
 }
 
 class EventList extends StatefulWidget {
-
   @override
   _EventListState createState() {
     return _EventListState();
@@ -41,12 +39,10 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-
   Future<List<EventResponse>>? _events;
 
   @override
   void initState() {
-
     _events = _getEvents();
 
     super.initState();
@@ -56,8 +52,9 @@ class _EventListState extends State<EventList> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<EventResponse>>(
       future: _events,
-      builder: (BuildContext context, AsyncSnapshot<List<EventResponse>> snapshot) {
-        if(snapshot.hasData) {
+      builder:
+          (BuildContext context, AsyncSnapshot<List<EventResponse>> snapshot) {
+        if (snapshot.hasData) {
           return _buildDataList(context, snapshot.data);
         } else if (snapshot.hasError) {
           return _buildErrorWidget(context, snapshot.error);
@@ -66,64 +63,56 @@ class _EventListState extends State<EventList> {
         }
       },
     );
-
-
   }
 
   /* Builds the widget shown while the Approvals are loading. */
   Widget _buildLoadingWidget(BuildContext context) {
-
     return Center(
-      child: Column(children: [
-        const SizedBox(
-          child: CircularProgressIndicator(),
-          height: 80,
-          width: 80,
-        ),
-        // Show a loading text
-        Text('Loading')
-      ],
+      child: Column(
+        children: [
+          const SizedBox(
+            child: CircularProgressIndicator(),
+            height: 80,
+            width: 80,
+          ),
+          // Show a loading text
+          Text('Loading')
+        ],
       ),
     );
   }
 
   /* Widget show in case of an error. */
   Widget _buildErrorWidget(BuildContext context, Object? error) {
-
     return Center(
       // TODO better text
       child: Text("Error: " + error!.toString()),
     );
   }
 
-  Widget _buildDataList(BuildContext context, List<EventResponse>? events){
+  Widget _buildDataList(BuildContext context, List<EventResponse>? events) {
     print('length: $events!.length');
     List<Widget> widgets = List.empty(growable: true);
     List<EventResponse> allEvents = List.empty(growable: true);
-    if(events != null ) {
+    if (events != null) {
       allEvents.addAll(events);
     }
 
     widgets.addAll(_buildListCells(context, allEvents));
 
-
-    if(widgets.isEmpty) {
+    if (widgets.isEmpty) {
       // TODO l10n
       widgets.add(Text('No Events Found'));
     }
-    return ListView(
-        children: widgets,
-        padding: const EdgeInsets.all(30)
-    );
+    return ListView(children: widgets, padding: const EdgeInsets.all(30));
   }
 
   /* Build list cells for all the given Approvals. */
-  List<Widget> _buildListCells(BuildContext context, List<EventResponse> approvals) {
-
+  List<Widget> _buildListCells(
+      BuildContext context, List<EventResponse> approvals) {
     List<Widget> widgets = List.empty(growable: true);
 
-    for( int index=0; index < approvals.length; index++) {
-
+    for (int index = 0; index < approvals.length; index++) {
       widgets.add(_buildListCell(context, approvals[index], index));
     }
     return widgets;
@@ -151,9 +140,18 @@ class _EventListState extends State<EventList> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(data.name,style: TextStyle(
-                            fontFamily: "Open sans",
-                          ),),
+                          Container(
+                            width: 200,
+                            child: Text(
+                              data.name,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: true,
+                              style: TextStyle(
+                                  fontFamily: Constants.PRIMARY_FONT_FAMILY,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                           FavoriteButton(
                             isFavorite: false,
                             // iconDisabledColor: Colors.white,
@@ -165,34 +163,44 @@ class _EventListState extends State<EventList> {
                       ),
                       subtitle: Container(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                data.description,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: GoogleFonts.openSans(fontSize: 16,fontStyle: FontStyle.normal),
-                                /*style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                ),*/
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              data.description,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: TextStyle(
+                                fontFamily: Constants.PRIMARY_FONT_FAMILY,
+                                fontSize: 18,
                               ),
-                            ],
-                          ))),
+                            ),
+                          ],
+                      ))),
                   UiHelper.buildDividerWithIndent(
                       startIndent: 20, endIndent: 20),
                   ListTile(
-                    title: Text('Events Info: '),
+                    title: Text(
+                      'Events Info: ',
+                      style: TextStyle(
+                          fontFamily: Constants.PRIMARY_FONT_FAMILY,
+                          fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Event Date: ${DateHelper.formatDate(data.startDate)}',style: TextStyle(
-                          fontSize: 14,
+                        Text(
+                          'Event Date: ${DateHelper.formatDate(data.startDate)}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: Constants.PRIMARY_FONT_FAMILY,
+                          ),
                         ),
-                        ),
-                        Text('Group: ${data.numberOfParticipants}',style: TextStyle(
-                          fontSize: 14,
-                        ),)
+                        Text(
+                          'Group: ${data.numberOfParticipants}',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: Constants.PRIMARY_FONT_FAMILY),
+                        )
                       ],
                     ),
                   )
@@ -203,14 +211,15 @@ class _EventListState extends State<EventList> {
 
   /* Tap the cell to open the details page. */
   void _tapCell(BuildContext context, EventResponse data) {
-    Navigator.of(context).pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
+    Navigator.of(context)
+        .pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
   }
 
-  Future<List<EventResponse>> _getEvents() async{
+  Future<List<EventResponse>> _getEvents() async {
     print('inside getEvents..');
     try {
-      AuthenticationTokenProvider tokenProvider = Provider.of<
-          AuthenticationTokenProvider>(context, listen: false);
+      AuthenticationTokenProvider tokenProvider =
+          Provider.of<AuthenticationTokenProvider>(context, listen: false);
 
       EventService service = EventService();
 
@@ -218,17 +227,16 @@ class _EventListState extends State<EventList> {
 
       print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
-        final List<EventResponse> events = await service.getEventResponse(authenticationToken, false, false);
+        final List<EventResponse> events =
+            await service.getEventResponse(authenticationToken, false, false);
         print('events: $events');
         return events;
       } else {
         return Future.error(
             "Error loading authentication token. Please log in again.");
       }
-    }catch(error){
-      return Future.error(
-          "Exception occurred $error.");
+    } catch (error) {
+      return Future.error("Exception occurred $error.");
     }
   }
-
 }

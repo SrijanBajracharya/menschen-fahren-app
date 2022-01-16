@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_menschen_fahren/constants.dart';
 import 'package:provider/provider.dart';
 
 /// Helper class containing different Ui components.
@@ -32,7 +33,7 @@ class UiHelper {
             padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
             child: Icon(
               iconData,
-              size: 30.0,
+              size: 25.0,
               color: Color(0xFF404040),
             ),
           ),
@@ -41,7 +42,7 @@ class UiHelper {
                   padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                   child: Text(
                     label,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, fontFamily: Constants.PRIMARY_FONT_FAMILY),
                   ),
                 )
               : Text(' '),
@@ -49,7 +50,11 @@ class UiHelper {
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: Constants.PRIMARY_FONT_FAMILY,
+                    fontWeight: FontWeight.bold
+                ),
               ))
         ],
       ),
@@ -62,9 +67,7 @@ class UiHelper {
       padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
       child: Text(
         descText,
-        style: TextStyle(
-          fontSize: 16,
-        ),
+        style: TextStyle(fontSize: 18, fontFamily: Constants.PRIMARY_FONT_FAMILY),
         textAlign: TextAlign.justify,
       ),
     );
@@ -182,7 +185,7 @@ class UiHelper {
         child: Text(
           title,
           style: TextStyle(
-            fontFamily: 'SF Pro',
+            fontFamily: Constants.PRIMARY_FONT_FAMILY,
             fontWeight: FontWeight.bold,
             fontSize: 24.0,
           ),
@@ -198,7 +201,7 @@ class UiHelper {
       child: Text(
         title,
         style: TextStyle(
-          fontFamily: 'SF Pro',
+          fontFamily: Constants.PRIMARY_FONT_FAMILY,
           fontWeight: FontWeight.bold,
           fontSize: 24.0,
         ),
@@ -214,7 +217,6 @@ class UiHelper {
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: TextButton(
           onPressed: () {
-            print('im pressed');
             onPressedFunc;
           },
           child: Container(
@@ -291,8 +293,8 @@ class UiHelper {
   }
 
   /// Builds a Text input field and validates if the needed.
-  static Widget getTextField({
-      required String labelText,
+  static Widget getTextField(
+      {required String labelText,
       required String hintText,
       required String validatorMessage,
       required Map<String, String> dataForm,
@@ -309,7 +311,7 @@ class UiHelper {
                   border: const OutlineInputBorder(),
                   labelText: labelText,
                   hintText: hintText),
-              initialValue: initValue !=null ? initValue: null,
+              initialValue: initValue != null ? initValue : null,
               validator: (value) {
                 if (validate) {
                   if (value == null || value.isEmpty) {
@@ -322,8 +324,6 @@ class UiHelper {
               },
               onSaved: (value) {
                 dataForm[formKey] = value!;
-                print(formKey + "####k ho");
-                print(dataForm[formKey]);
               },
             ),
           ],
@@ -365,8 +365,8 @@ class UiHelper {
         ));
   }
 
-  static Widget getTextFieldWithRegExValidation({
-      required String labelText,
+  static Widget getTextFieldWithRegExValidation(
+      {required String labelText,
       required String hintText,
       required String validatorMessage,
       required Map<String, String> dataForm,
@@ -401,7 +401,6 @@ class UiHelper {
               },
               onSaved: (value) {
                 dataForm[formKey] = value!;
-                print(formKey + "####k ho");
               },
             ),
           ],
@@ -414,7 +413,7 @@ class UiHelper {
       required String validationText,
       required Map<String, String> dataForm,
       required String formKey,
-      String ? initValue}) {
+      String? initValue}) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: TextFormField(
@@ -460,7 +459,8 @@ class UiHelper {
     );
   }
 
-  static void showSnackBar({required BuildContext context,required String message}) {
+  static void showSnackBar(
+      {required BuildContext context, required String message}) {
     final snackBar = SnackBar(
       backgroundColor: Color(0xff8BBA50),
       content: Text(message),

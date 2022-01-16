@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/notification_data.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +41,17 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
       //endDrawer:showHamburgerMenu? const AppDrawer(): null,
       appBar: AppBar(
         backgroundColor: Color(0xff8BBA50),
-        title: Text(getTitle(context),
+        toolbarTextStyle: TextStyle(
+          fontFamily: Constants.PRIMARY_FONT_FAMILY
+        ),
+        titleTextStyle: TextStyle(
+          fontFamily: Constants.PRIMARY_FONT_FAMILY
+        ),
+        title: Text(
+          getTitle(context),
+          style: TextStyle(
+            fontFamily: Constants.PRIMARY_FONT_FAMILY
+          ),
         ),
         /*actions: <Widget>[
           IconButton(icon: Icon(Icons.notifications_none), onPressed: () => openDialog()),
@@ -51,6 +62,9 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
         backgroundColor: Color(0xff8BBA50),
         selectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
+        selectedLabelStyle: TextStyle(
+          fontFamily: Constants.PRIMARY_FONT_FAMILY
+        ),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
