@@ -89,7 +89,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                 ),
               ],
             ),
-            margin: EdgeInsets.all(16.0),
+            margin: EdgeInsets.symmetric(horizontal: 16.0,vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16.0),

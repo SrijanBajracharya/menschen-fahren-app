@@ -16,8 +16,11 @@ class NotificationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: Color(0xff8BBA50),
-        title: const Text('Notification'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black87),
+        title: const Text('Notification',style: TextStyle(color: Colors.black87),
+        ),
       ),
       body: buildNotificationItem(this.notificationData.notifications),
     );

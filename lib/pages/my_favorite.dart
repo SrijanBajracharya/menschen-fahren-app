@@ -29,7 +29,7 @@ class _MyFavoriteState extends StatefulBasePage<MyFavorite> {
 
   @override
   String getTitle(BuildContext context) {
-    return 'Events';
+    return 'My Favorites';
   }
 }
 
@@ -126,7 +126,7 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
     return InkWell(
         onTap: () => _tapCell(context, data),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 5, top: 5),
+          padding: const EdgeInsets.only( bottom: 10),
           child: Card(
               borderOnForeground: true,
               elevation: 5,

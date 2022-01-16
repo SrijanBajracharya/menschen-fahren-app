@@ -123,7 +123,7 @@ class _EventListState extends State<EventList> {
     return InkWell(
         onTap: () => _tapCell(context, data),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 5, top: 5),
+          padding: const EdgeInsets.only(bottom: 10),
           child: Card(
               borderOnForeground: true,
               elevation: 5,

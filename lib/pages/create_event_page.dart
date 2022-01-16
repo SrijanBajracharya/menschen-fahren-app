@@ -55,7 +55,7 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Padding(
-            padding: EdgeInsets.only(top: 30.0),
+            padding: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
           ),
           UiHelper.getTextField(
             labelText: "Event Name",

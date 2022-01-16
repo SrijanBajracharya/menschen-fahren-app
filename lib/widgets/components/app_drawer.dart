@@ -14,9 +14,10 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            backgroundColor: Color(0xff8BBA50),
-            title: const Text('Settings'),
+            backgroundColor: Colors.white,
+            title: const Text('Settings',style: TextStyle(color: Colors.black87),),
             automaticallyImplyLeading: false,
+            elevation: 0,
           ),
           const Divider(),
           ListTile(

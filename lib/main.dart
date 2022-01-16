@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
               ],
               theme: ThemeData(
                   primarySwatch: Colors.blue,
-                  scaffoldBackgroundColor: Colors.grey.shade300,
+                  scaffoldBackgroundColor: Colors.white,
                   backgroundColor: Color(0xFFFBFBFB),
                   fontFamily: Constants.PRIMARY_FONT_FAMILY
               ),

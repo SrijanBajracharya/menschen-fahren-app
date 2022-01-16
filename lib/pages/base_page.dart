@@ -47,18 +47,20 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      endDrawer: showHamburgerMenu?AppDrawer():null,
+      endDrawer: showHamburgerMenu? AppDrawer():null,
       appBar: AppBar(
-        backgroundColor: Color(0xff8BBA50),
+        backgroundColor: Color(0xffffffff),
         toolbarTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
         titleTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
+        iconTheme: IconThemeData(color: Colors.black87),
+        elevation: 0,
         title: Text(
           getTitle(context),
-          style: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
+          style: TextStyle(color: Colors.black87,fontSize: 20),
         ),
         actions: (showNotification==null || showNotification==true) ? <Widget>[
           IconButton(
-              icon: Icon(Icons.notifications_none),
+              icon: Icon(Icons.notifications_none,color: Colors.black87,),
               onPressed: () => openDialog()),
           //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
         ]:null,

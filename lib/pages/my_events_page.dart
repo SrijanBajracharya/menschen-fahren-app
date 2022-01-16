@@ -14,7 +14,7 @@ class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
   Widget buildContent(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
         child: (ListView.builder(
           itemCount: 10,
           itemBuilder: (context, index) {
