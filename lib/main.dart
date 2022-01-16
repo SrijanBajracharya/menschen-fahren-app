@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_menschen_fahren/config/app_config.dart';
 import 'package:project_menschen_fahren/constants.dart';
+import 'package:project_menschen_fahren/pages/introduction_screen.dart';
 import 'package:project_menschen_fahren/providers/aircraft_provider.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'package:project_menschen_fahren/providers/maint_log_provider.dart';
@@ -14,7 +15,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
   final AppConfig config = await AppConfig.forEnvironment("dev");
-  runApp(MyApp(config: config,));
+  //runApp(MyApp(config: config,));
+  runApp(App());
 }
 
 class MyApp extends StatelessWidget {

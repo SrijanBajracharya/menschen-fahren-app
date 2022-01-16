@@ -49,6 +49,7 @@ dependencies:
   favorite_button: ^0.0.4
   google_fonts: ^2.1.1
   top_modal_sheet: ^1.0.0
+  introduction_screen: ^2.1.0
 
 dev_dependencies:
   flutter_test:
