@@ -15,14 +15,22 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           AppBar(
             backgroundColor: Colors.white,
-            title: const Text('Settings',style: TextStyle(color: Colors.black87),),
+            title: _getDefaultStyle('Profile'),
             automaticallyImplyLeading: false,
             elevation: 0,
           ),
           const Divider(),
           ListTile(
+            leading: const Icon(Icons.settings),
+            title: _getDefaultStyle('Settings'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(RoutesName.SETTINGS);
+            },
+          ),
+          const Divider(),
+          ListTile(
             leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
+            title: _getDefaultStyle('Logout'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
               Provider.of<AuthenticationTokenProvider>(context, listen: false)
@@ -32,5 +40,9 @@ class AppDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _getDefaultStyle(String title){
+    return Text(title,style: TextStyle(color: Colors.black87,fontSize: 18),);
   }
 }

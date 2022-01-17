@@ -87,7 +87,7 @@ class _ProfileState extends StatefulBasePage<Profile> {
                       children: [
                         UiHelper.getCircleAvatarWithCameraDefault(assetName: 'assets/images/nepal.jpg',onIconClick: ()=>onCameraPress() ),
                         UiHelper.buildCenterTitle(title: '${userProfile.user.firstName} ${userProfile.user.lastName}'),
-                        CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.ELEVATED,),
+                        CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.OUTLINE,),
                         UiHelper.buildDivider(),
                         UiHelper.buildIconInfo(Icons.transgender,null,'29 M'),
                         UiHelper.buildIconInfo(Icons.work, 'Works at','Achievers'),

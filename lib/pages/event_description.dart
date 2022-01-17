@@ -121,7 +121,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
               style: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
             ),
             content: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Form(
                 child: Column(
                   children: <Widget>[
@@ -139,6 +139,17 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                       },
                       onSaved: (value) {},
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(top:20,bottom: 20),
+                      child: Text('OR',),
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'User',
+                        icon: Icon(Icons.account_circle),
+                      ),
+                      onSaved: (value) {},
+                    ),
                   ],
                 ),
               ),
@@ -147,7 +158,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
               CustomButton(
                   buttonText: 'Invite',
                   onPressedFunc: () => _inviteFunc(),
-                  buttonType: ButtonType.TEXT)
+                  buttonType: ButtonType.OUTLINE)
             ],
           );
         });

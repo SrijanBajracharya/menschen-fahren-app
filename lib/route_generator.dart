@@ -16,6 +16,7 @@ import 'package:project_menschen_fahren/pages/my_events_page.dart';
 import 'package:project_menschen_fahren/pages/my_favorite.dart';
 import 'package:project_menschen_fahren/pages/profile.dart';
 import 'package:project_menschen_fahren/pages/registration_page.dart';
+import 'package:project_menschen_fahren/pages/settings.dart';
 import 'package:project_menschen_fahren/pages/splash_screen.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'pages/delays.dart';
@@ -78,6 +79,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => FleetStatus(),
             settings: const RouteSettings(name: RoutesName.FLEET_STATUS)
+        );
+
+      case RoutesName.SETTINGS:
+        return MaterialPageRoute(
+            builder: (_) => Settings(),
+            settings: const RouteSettings(name: RoutesName.SETTINGS)
         );
 
       case RoutesName.EVENT_DESCRIPTION:
