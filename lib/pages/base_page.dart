@@ -33,9 +33,18 @@ abstract class BasePage extends StatelessWidget {
 abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   bool showHamburgerMenu;
   int? currentIndex;
-  bool?  showBottomNavigation = true;
+  bool? showBottomNavigation = true;
   bool? showNotification = true;
-  StatefulBasePage({required this.showHamburgerMenu,this.showBottomNavigation,this.showNotification, this.currentIndex})
+
+  bool? showBackButton = false;
+  String routeName;
+  StatefulBasePage(
+      {required this.showHamburgerMenu,
+      this.showBottomNavigation,
+      this.showNotification,
+      this.currentIndex,
+      this.showBackButton,
+      required this.routeName})
       : super();
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -47,8 +56,12 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      endDrawer: showHamburgerMenu? AppDrawer():null,
+      endDrawer: showHamburgerMenu ? AppDrawer() : null,
       appBar: AppBar(
+        leading: (showBackButton==true) ? IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => {Navigator.pushReplacementNamed(context, routeName)},
+        ):null,
         backgroundColor: Color(0xffffffff),
         toolbarTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
         titleTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
@@ -56,16 +69,24 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
         elevation: 0,
         title: Text(
           getTitle(context),
-          style: TextStyle(color: Colors.black87,fontSize: 20),
+          style: TextStyle(color: Colors.black87, fontSize: 20),
         ),
-        actions: (showNotification==null || showNotification==true) ? <Widget>[
-          IconButton(
-              icon: Icon(Icons.notifications_none,color: Colors.black87,),
-              onPressed: () => openDialog()),
-          //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
-        ]:null,
+        actions: (showNotification == null || showNotification == true)
+            ? <Widget>[
+                IconButton(
+                    icon: Icon(
+                      Icons.notifications_none,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () => openDialog()),
+                //IconButton(icon: Icon(Icons.account_circle_sharp), onPressed: ()=>_openDrawer(),),
+              ]
+            : null,
       ),
-      bottomNavigationBar: (showBottomNavigation==null || showBottomNavigation==true) ? _showBottomNav(): null,
+      bottomNavigationBar:
+          (showBottomNavigation == null || showBottomNavigation == true)
+              ? _showBottomNav()
+              : null,
       body: buildContent(context),
     );
   }
