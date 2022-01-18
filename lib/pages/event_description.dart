@@ -21,7 +21,7 @@ class EventDescription extends StatefulWidget {
 }
 
 class _EventDescriptionState extends StatefulBasePage<EventDescription> {
-  _EventDescriptionState() : super(showHamburgerMenu: false,currentIndex: 0);
+  _EventDescriptionState() : super(showHamburgerMenu: false,currentIndex: 0,showBackButton: true, routeBackTo: RoutesName.MAIN_PAGE);
 
   final Map<String, String> _editEventData = {
     'aboutMe': '',

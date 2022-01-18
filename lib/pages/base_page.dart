@@ -36,15 +36,21 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
   bool? showBottomNavigation = true;
   bool? showNotification = true;
 
+  //Add back button only in the page where needed.
+  //NOTE: This is not a right solution, back button should be displayed if we navigate using pushNamed but currently because
+  //of lack of proper knowledge, using pushedNamedReplacement instead everywhere.
+  // Is showBackButton is true: It is compulsory to give the routeBackTo.
   bool? showBackButton = false;
-  String routeName;
+  //Compulsory field if showBackButton is true.
+  String? routeBackTo;
+
   StatefulBasePage(
       {required this.showHamburgerMenu,
       this.showBottomNavigation,
       this.showNotification,
       this.currentIndex,
       this.showBackButton,
-      required this.routeName})
+      this.routeBackTo})
       : super();
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -58,10 +64,17 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
       backgroundColor: Colors.white,
       endDrawer: showHamburgerMenu ? AppDrawer() : null,
       appBar: AppBar(
-        leading: (showBackButton==true) ? IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => {Navigator.pushReplacementNamed(context, routeName)},
-        ):null,
+        leading: (showBackButton == true)
+            ? IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () =>{
+                  if(routeBackTo !=null){
+                    Navigator.pushReplacementNamed(context, routeBackTo!)
+                  }
+
+                },
+              )
+            : null,
         backgroundColor: Color(0xffffffff),
         toolbarTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
         titleTextStyle: TextStyle(fontFamily: Constants.PRIMARY_FONT_FAMILY),
