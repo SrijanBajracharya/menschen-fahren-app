@@ -65,6 +65,45 @@ class EventService{
     }
   }
 
+  /* Returns DataCacheEntries from the service. */
+  Future<List<EventResponse>> getMyEvents(String authenticationToken) async {
+
+
+    // create a URL based on the configured url and known endpoint that contains the parameters.
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/events/59481a15-2f85-4d0f-9e30-af21a601e502?voided=false');
+
+    print('serverAddress: $serverAddress');
+    http.Response response;
+    try {
+      response = await http.get(serverAddress, headers: _buildHeader(authenticationToken));
+      print(response.body);
+    } catch(e) {
+      return Future.error(e);
+    }
+
+    if (response.statusCode == 200) {
+
+      try {
+
+        //Read the "data" field from the response for the list of DataCacheEntry.
+        final jsonData = jsonDecode(response.body);
+        // TODO maybe make it more stable for cases if only one of them fails to parse.
+        return EventResponse.listFromJson(jsonData['data']);
+
+      } catch (e) {
+        return Future.error(e);
+      }
+
+    } else if(response.statusCode == 204) {
+      return List.empty();
+
+    } else {
+
+      String errorResponse = _handleErrorResponse(response, "getMyEvents");
+      return Future.error(errorResponse);
+    }
+  }
+
   /* Returns the DataCache entries according to the provided filter. */
   Future<List<MyFavoriteResponse>> getFavoriteEvents(String authenticationToken, String userId) async {
     // create a URL based on the configured url and known endpoint that contains the parameters.
