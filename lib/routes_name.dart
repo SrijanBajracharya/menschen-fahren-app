@@ -16,6 +16,7 @@ class RoutesName {
   static const String EVENTS = '/events';
   static const String ERROR = '/error';
   static const String PROFILE= '/profile';
+  static const String FRIENDS='/friends';
   static const String EDIT_PROFILE='/profile/edit';
 
 

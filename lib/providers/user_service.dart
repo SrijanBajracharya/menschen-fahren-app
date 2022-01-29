@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:project_menschen_fahren/config/app_config.dart';
 import 'package:project_menschen_fahren/models/exceptions/http_exception.dart';
+import 'package:project_menschen_fahren/models/friends_response.dart';
 import 'package:project_menschen_fahren/models/user_profile_response.dart';
 import 'package:project_menschen_fahren/models/user_response.dart';
 import 'package:http/http.dart' as http;
@@ -87,6 +88,37 @@ class UserService{
     }  else {
 
       String errorResponse = _handleErrorResponse(response, "getUserProfile");
+      return Future.error(errorResponse);
+    }
+  }
+
+
+  Future<List<FriendResponse>> getFriendsByUserId(String authenticationToken,String userId) async {
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/friend/$userId');
+    http.Response response;
+    try {
+      response = await http.get(serverAddress, headers: _buildHeader(authenticationToken));
+      print(response.body);
+    } catch(e) {
+      return Future.error(e);
+    }
+
+    if (response.statusCode == 200) {
+
+      try {
+
+        //Read the "data" field from the response for the list of DataCacheEntry.
+        final jsonData = jsonDecode(response.body);
+        // TODO maybe make it more stable for cases if only one of them fails to parse.
+        return FriendResponse.listFromJson(jsonData['data']);
+
+      } catch (e) {
+        return Future.error(e);
+      }
+
+    }  else {
+
+      String errorResponse = _handleErrorResponse(response, "getFriends");
       return Future.error(errorResponse);
     }
   }

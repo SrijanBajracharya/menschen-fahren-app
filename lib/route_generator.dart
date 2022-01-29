@@ -7,6 +7,7 @@ import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/models/maint_log_type.dart';
 import 'package:project_menschen_fahren/models/user_profile_response.dart';
 import 'package:project_menschen_fahren/pages/ac_status.dart';
+import 'package:project_menschen_fahren/pages/friends.dart';
 import 'package:project_menschen_fahren/pages/login_page.dart';
 import 'package:project_menschen_fahren/pages/edit_profile.dart';
 import 'package:project_menschen_fahren/pages/error_page.dart';
@@ -142,6 +143,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => Profile(),
             settings: const RouteSettings(name: RoutesName.PROFILE)
+        );
+
+      case RoutesName.FRIENDS:
+        return MaterialPageRoute(
+            builder: (_) => Friend(),
+            settings: const RouteSettings(name: RoutesName.FRIENDS)
         );
 
       case RoutesName.EDIT_PROFILE:
