@@ -6,7 +6,11 @@ class AuthenticationResponse{
   /// The access token of the Authentication response from the keycloak.
   String accessToken;
 
-  AuthenticationResponse({required this.accessToken});
+  String tokenType;
+
+  DateTime expiryDate;
+
+  AuthenticationResponse({required this.accessToken,required this.tokenType, required this.expiryDate});
 
   @override
   String toString() {
@@ -17,14 +21,18 @@ class AuthenticationResponse{
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) {
 
     return AuthenticationResponse(
-      accessToken: json['jwttoken'],
+      accessToken: json['accessToken'],
+      tokenType: json['tokenType'],
+      expiryDate: DateTime.parse(json['expiryDate'])
     );
   }
 
   /// Returns the properties of the object as a Json map.
   Map<String, dynamic> toJson() {
     return {
-      'jwttoken': accessToken,
+      'accessToken': accessToken,
+      'tokenType': tokenType,
+      'expiryDate': expiryDate
     };
   }
 }

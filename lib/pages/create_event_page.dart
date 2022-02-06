@@ -1,5 +1,6 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:project_menschen_fahren/helper/common_helper.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
@@ -36,14 +37,13 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
   final Map<String, String> _createEventData = {
     'name': '',
     'numberOfParticipants': '',
-    'countryCode': '',
-    'eventTypeId': '53be8c61-0afe-48ee-9974-b09c1643bcca',
+    'country': '',
+    'eventType': '',
     'ageGroup': '',
     'location': '',
     'startDate': '',
     'endDate': '',
     'description': '',
-    'userId': 'b8ad1ffe-a2ee-4f39-a5db-232fe9abf9ef',
     'isPrivate': 'false'
   };
 
@@ -67,15 +67,15 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
             validate: true,
             initValue: widget.data?.name,
           ),
-          /*CustomDropdown(
+          CustomDropdown(
               label: 'Event Type',
               dropdownLabel: 'Choose',
-              dropdownItems: _getEventTypes(),
+              dropdownItems: CommonHelper.getEventTypes(),
               validate: true,
               dataForm: _createEventData,
-              formKey: 'eventTypeId',
-              initValue: widget.data?.eventTypeId,
-          ),*/
+              formKey: 'eventType',
+              initValue: widget.data?.eventType,
+          ),
           UiHelper.getTextField(
               labelText: "Number of Participants",
               hintText: "Please Enter a Number",
@@ -87,16 +87,16 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
           CustomDropdown(
             label: 'Country',
             dropdownLabel: 'Choose',
-            dropdownItems: _getCountries(),
+            dropdownItems: CommonHelper.getCountries(),
             validate: true,
             dataForm: _createEventData,
-            formKey: 'countryCode',
-            initValue: widget.data?.countryCode,
+            formKey: 'country',
+            initValue: widget.data?.country,
           ),
           CustomDropdown(
             label: 'Age Group',
             dropdownLabel: 'Choose',
-            dropdownItems: _getAgeGroup(),
+            dropdownItems: CommonHelper.getAgeGroup(),
             validate: true,
             dataForm: _createEventData,
             formKey: 'ageGroup',
@@ -166,44 +166,6 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
       UiHelper.showErrorDialog(
           context: context, header: 'Error!!', message: error.toString());
     }
-  }
-
-  List<String> _getEventTypes() {
-    List<String> eventTypes = <String>[
-      'Seminar',
-      'Conference',
-      'Hiking',
-      'Trekking',
-      'Tour',
-      'Party',
-      'Gathering'
-    ];
-    return eventTypes;
-  }
-
-  List<String> _getCountries() {
-    List<String> countries = <String>[
-      'Nepal',
-      'India',
-      'Pakistan',
-      'Srilanka',
-      'Japan',
-      'South Korea',
-      'Indonesia',
-      'USA',
-      'Mexico'
-    ];
-    return countries;
-  }
-
-  List<String> _getAgeGroup() {
-    List<String> ageGroup = <String>[
-      'All',
-      '< 15',
-      '15-25',
-      '25-45',
-    ];
-    return ageGroup;
   }
 
   Widget getDatePicker(

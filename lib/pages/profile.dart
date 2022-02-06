@@ -1,3 +1,4 @@
+import 'package:project_menschen_fahren/helper/date_helper.dart';
 import 'package:project_menschen_fahren/models/button_color.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/user_profile_response.dart';
@@ -96,10 +97,10 @@ class _ProfileState extends StatefulBasePage<Profile> {
                         ),
 
                         UiHelper.buildDivider(),
-                        UiHelper.buildIconInfo(Icons.transgender,null,'29 M'),
-                        UiHelper.buildIconInfo(Icons.work, 'Works at','Achievers'),
-                        UiHelper.buildIconInfo(Icons.home, 'From','${userProfile.address}'),
-                        UiHelper.buildIconInfo(Icons.add_location_alt, 'Lives in','Frankfurt, Germany'),
+                        UiHelper.buildIconInfo(Icons.transgender,null,'${DateHelper.findDateDifference(DateTime.parse(userProfile.dateOfBirth!)).years} ${userProfile.gender}'),
+                        //UiHelper.buildIconInfo(Icons.work, 'Works at','Achievers'),
+                        UiHelper.buildIconInfo(Icons.home, 'From','${userProfile.country}'),
+                        UiHelper.buildIconInfo(Icons.add_location_alt, 'Lives in','${userProfile.address}'),
                         UiHelper.buildIconInfo(Icons.local_phone_rounded, null, '${userProfile.phoneNumber}'),
                         UiHelper.buildIconInfo(Icons.email,null,'${userProfile.user.email}'),
                         UiHelper.buildDivider(),
@@ -139,7 +140,7 @@ class _ProfileState extends StatefulBasePage<Profile> {
 
       print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
-        final UserProfileResponse userProfile = await service.getUserProfile(authenticationToken, "456be2e3-4ebc-41c4-a129-cf8862f5c958", false);
+        final UserProfileResponse userProfile = await service.getUserProfile(authenticationToken,  false);
         print('$userProfile  ussssssss');
         return userProfile;
       } else {

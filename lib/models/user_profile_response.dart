@@ -30,6 +30,8 @@ class UserProfileResponse {
 
   String id;
 
+  String country;
+
   UserEditRequest user;
 
   bool voided;
@@ -50,7 +52,8 @@ class UserProfileResponse {
       this.education,
       this.hobbies,
       this.experiences,
-      this.userId});
+      this.userId,
+      required this.country,});
 
 
   /* Build an entity from the given json data. */
@@ -73,6 +76,7 @@ class UserProfileResponse {
       hobbies: json['hobbies'],
       experiences: json['experiences'],
       userId: json['userId'],
+      country: json['country']
     );
   }
 

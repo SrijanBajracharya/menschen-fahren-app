@@ -21,24 +21,10 @@ class _HomeState extends StatefulBasePage<Home> {
   _HomeState() : super(showHamburgerMenu: false,currentIndex: 0);
 
   @override
-  Widget buildContent(BuildContext context) {
-    return EventList();
-  }
-
-  @override
   String getTitle(BuildContext context) {
     return 'Events';
   }
-}
 
-class EventList extends StatefulWidget {
-  @override
-  _EventListState createState() {
-    return _EventListState();
-  }
-}
-
-class _EventListState extends State<EventList> {
   Future<List<EventResponse>>? _events;
 
   @override
@@ -49,7 +35,7 @@ class _EventListState extends State<EventList> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildContent(BuildContext context) {
     return FutureBuilder<List<EventResponse>>(
       future: _events,
       builder:
@@ -91,7 +77,6 @@ class _EventListState extends State<EventList> {
   }
 
   Widget _buildDataList(BuildContext context, List<EventResponse>? events) {
-    print('length: $events!.length');
     List<Widget> widgets = List.empty(growable: true);
     List<EventResponse> allEvents = List.empty(growable: true);
     if (events != null) {
@@ -220,8 +205,6 @@ class _EventListState extends State<EventList> {
       EventService service = EventService();
 
       String? authenticationToken = await tokenProvider.getBearerToken();
-
-      print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
         final List<EventResponse> events =
             await service.getEventResponse(authenticationToken, false, false);
@@ -235,4 +218,5 @@ class _EventListState extends State<EventList> {
       return Future.error("Exception occurred $error.");
     }
   }
+
 }

@@ -7,8 +7,6 @@ class UserResponse {
 
   DateTime createdTimestamp;
 
-  String password;
-
   String firstName;
 
   String lastName;
@@ -22,7 +20,6 @@ class UserResponse {
     required this.voided,
     required this.modifiedTimestamp,
     required this.createdTimestamp,
-    required this.password,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -38,7 +35,6 @@ class UserResponse {
       voided: json['voided'],
       createdTimestamp: DateTime.parse(json['createdTimestamp']),
       modifiedTimestamp: DateTime.parse(json['modifiedTimestamp']),
-      password : json['password'],
       firstName: json['firstName'],
       lastName:json['lastName'],
       email: json['email'],

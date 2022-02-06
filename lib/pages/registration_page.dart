@@ -36,6 +36,7 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
     'username': '',
     'email': '',
     'password': '',
+    'confirmPassword':''
   };
 
 
@@ -87,6 +88,10 @@ class _RegistrationPageState extends StatefulBasePage<RegistrationPage> {
 
     try {
       UserResponse user = await service.createUser(_authData);
+      UiHelper.showSnackBar(
+          context: context, message: "User created successfully");
+      _formKey.currentState?.reset();
+
       print(user);
       Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
     } catch (error) {

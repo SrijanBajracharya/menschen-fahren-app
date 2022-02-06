@@ -225,7 +225,7 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
       print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
         final List<MyFavoriteResponse> events = await service.getFavoriteEvents(
-            authenticationToken, "456be2e3-4ebc-41c4-a129-cf8862f5c958");
+            authenticationToken);
         print('events: $events');
         return events;
       } else {

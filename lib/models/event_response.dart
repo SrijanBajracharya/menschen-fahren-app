@@ -9,15 +9,15 @@ class EventResponse {
 
   DateTime createdTimestamp;
 
-  EventTypeDtoResponse eventType;
+  String eventType;
 
-  String userId;
+  //String userId;
 
   String name;
 
   String location;
 
-  String countryCode;
+  String country;
 
   String description;
 
@@ -31,11 +31,8 @@ class EventResponse {
 
   bool private;
 
-  String eventTypeId;
-
-  EventResponse({required this.id, required this.voided, required this.createdTimestamp, required this.eventType,required this.userId,required  this.name, required this.location,required  this.countryCode, required this.description
-    , required this.ageGroup,required  this.startDate, required this.endDate, required this.numberOfParticipants, required this.private,
-    required this.eventTypeId});
+  EventResponse({required this.id, required this.voided, required this.createdTimestamp, required this.eventType,required  this.name, required this.location,required  this.country, required this.description
+    , required this.ageGroup,required  this.startDate, required this.endDate, required this.numberOfParticipants, required this.private});
 
   /* Build an entity from the given json data. */
   factory EventResponse.fromJson(Map<String,dynamic> json) {
@@ -43,19 +40,18 @@ class EventResponse {
     return EventResponse(
       id : json['id'],
       voided: json['voided'],
-      eventType:EventTypeDtoResponse.fromJson(json['eventType']),
+      eventType: json['eventType'],
       createdTimestamp: DateTime.parse(json['createdTimestamp']),
-      userId : json['userId'],
+      //userId : json['userId'],
       name: json['name'],
       location:json['location'],
-      countryCode: json['countryCode'],
+      country: json['country'],
       description: json['description'],
       ageGroup: json['ageGroup'],
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
       numberOfParticipants: json['numberOfParticipants'],
       private: json['private'],
-      eventTypeId: json['eventTypeId'],
     );
   }
 

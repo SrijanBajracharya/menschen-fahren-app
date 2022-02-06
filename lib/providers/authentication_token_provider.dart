@@ -100,12 +100,13 @@ class AuthenticationTokenProvider extends ChangeNotifier {
       http.Response response = await http.post(serviceUrl, headers: headers, body: json.encode(data));
       print(response.body);
       dynamic responseData = json.decode(response.body);
+      print('${responseData['data']} responseData');
       if (responseData['error'] != null) {
         log.d("Error while trying to login. $responseData['error']");
         throw HttpException(responseData['error']['error_description']);
       }
 
-      AuthenticationResponse authResponse = AuthenticationResponse.fromJson(responseData);
+      AuthenticationResponse authResponse = AuthenticationResponse.fromJson(responseData['data']);
 
       token = authResponse.accessToken;
 
@@ -117,6 +118,7 @@ class AuthenticationTokenProvider extends ChangeNotifier {
         },
       );
       prefs.setString(USER_DATA_TOKEN, token!);
+      prefs.setString(USER_DATA_EXPIRES_IN, authResponse.expiryDate.toIso8601String());
       return true;
     }catch (error) {
       rethrow;
@@ -132,13 +134,16 @@ class AuthenticationTokenProvider extends ChangeNotifier {
     }
 
     final String userToken = prefs.getString(USER_DATA_TOKEN)!;
+    final DateTime expiryDate = DateTime.parse(prefs.getString(USER_DATA_EXPIRES_IN)!);
     //final extractedUserData = json.decode(userData) as Map<String, dynamic>;
 
     //String userToken = extractedUserData[USER_DATA_TOKEN];
-    if (userToken == null) {
-        return false;
-    }
 
+    print(expiryDate);
+    DateTime now = DateTime.now();
+    if(now.isAfter(expiryDate)){
+      await logout();
+    }
     notifyListeners();
     return true;
   }

@@ -51,7 +51,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     UiHelper.buildIconInfo(FontAwesomeIcons.calendar, null,
-                        widget.data.eventType.name),
+                        widget.data.eventType),
                     UiHelper.buildIconInfo(FontAwesomeIcons.users, null,
                         widget.data.numberOfParticipants.toString()),
                   ],
@@ -65,7 +65,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                         FontAwesomeIcons.mapMarked,
                         null,
                         '${widget.data.location}' +
-                            ', ${widget.data.countryCode}'),
+                            ', ${widget.data.country}'),
                   ],
                 ),
                 UiHelper.buildDivider(),

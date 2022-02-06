@@ -79,7 +79,7 @@ class _FriendState extends StatefulBasePage<Friend> {
 
     if (widgets.isEmpty) {
       // TODO l10n
-      widgets.add(Text('No Events Found'));
+      widgets.add(Text('No Friends Found'));
     }
     return ListView(children: widgets, padding: const EdgeInsets.all(30));
   }
@@ -182,7 +182,7 @@ class _FriendState extends StatefulBasePage<Friend> {
 
       if (authenticationToken != null) {
         final List<FriendResponse> events =
-        await service.getFriendsByUserId(authenticationToken, "456be2e3-4ebc-41c4-a129-cf8862f5c958");
+        await service.getFriendsByUserId(authenticationToken);
         print('events: $events');
         return events;
       } else {

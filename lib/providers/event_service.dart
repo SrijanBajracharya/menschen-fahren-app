@@ -70,7 +70,7 @@ class EventService{
 
 
     // create a URL based on the configured url and known endpoint that contains the parameters.
-    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/events/59481a15-2f85-4d0f-9e30-af21a601e502?voided=false');
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/events/user');
 
     print('serverAddress: $serverAddress');
     http.Response response;
@@ -105,9 +105,9 @@ class EventService{
   }
 
   /* Returns the DataCache entries according to the provided filter. */
-  Future<List<MyFavoriteResponse>> getFavoriteEvents(String authenticationToken, String userId) async {
+  Future<List<MyFavoriteResponse>> getFavoriteEvents(String authenticationToken) async {
     // create a URL based on the configured url and known endpoint that contains the parameters.
-    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/favorites/$userId');
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/favorites');
 
     print('serverAddress: $serverAddress');
     http.Response response;
