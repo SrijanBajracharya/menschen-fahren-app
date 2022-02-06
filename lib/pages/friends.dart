@@ -68,7 +68,6 @@ class _FriendState extends StatefulBasePage<Friend> {
   }
 
   Widget _buildDataList(BuildContext context, List<FriendResponse>? events) {
-    print('length: $events!.length');
     List<Widget> widgets = List.empty(growable: true);
     List<FriendResponse> allFriends = List.empty(growable: true);
     if (events != null) {
@@ -161,8 +160,8 @@ class _FriendState extends StatefulBasePage<Friend> {
   }
 
   void _tapCell(BuildContext context, FriendResponse data) {
-    //Navigator.of(context)
-     //   .pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
+    Navigator.of(context)
+       .pushReplacementNamed(RoutesName.PROFILE, arguments: data.id);
   }
 
   @override

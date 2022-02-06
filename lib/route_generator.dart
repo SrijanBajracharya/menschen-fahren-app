@@ -138,10 +138,13 @@ class RouteGenerator {
         );
 
       case RoutesName.PROFILE:
-        return MaterialPageRoute(
-            builder: (_) => Profile(),
-            settings: const RouteSettings(name: RoutesName.PROFILE)
-        );
+        if(args is String?){
+          return MaterialPageRoute(
+              builder: (_) => Profile(userId: args,),
+              settings: const RouteSettings(name: RoutesName.PROFILE)
+          );
+        }
+        break;
 
       case RoutesName.FRIENDS:
         return MaterialPageRoute(

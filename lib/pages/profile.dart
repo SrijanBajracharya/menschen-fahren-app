@@ -13,6 +13,11 @@ import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+
+  final String? userId;
+
+  Profile({Key? key, this.userId}):super();
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -88,13 +93,13 @@ class _ProfileState extends StatefulBasePage<Profile> {
                       children: [
                         UiHelper.getCircleAvatarWithCameraDefault(assetName: 'assets/images/nepal.jpg',onIconClick: ()=>onCameraPress() ),
                         UiHelper.buildCenterTitle(title: '${userProfile.user.firstName} ${userProfile.user.lastName}'),
-                        Row(
+                        (widget.userId ==null)?Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomButton(buttonText: 'Edit', onPressedFunc: ()=>onEditPress(userProfile), buttonType: ButtonType.OUTLINE,),
                             CustomButton(buttonText: 'Friends', onPressedFunc: ()=>onFriendPress(), buttonType: ButtonType.OUTLINE,),
                           ],
-                        ),
+                        ):Container(),
 
                         UiHelper.buildDivider(),
                         UiHelper.buildIconInfo(Icons.transgender,null,'${DateHelper.findDateDifference(DateTime.parse(userProfile.dateOfBirth!)).years} ${userProfile.gender}'),
@@ -129,7 +134,7 @@ class _ProfileState extends StatefulBasePage<Profile> {
   }
 
   Future<UserProfileResponse> _getUserProfile() async{
-    print('inside getEvents..');
+
     try {
       AuthenticationTokenProvider tokenProvider = Provider.of<
           AuthenticationTokenProvider>(context, listen: false);
@@ -138,9 +143,14 @@ class _ProfileState extends StatefulBasePage<Profile> {
 
       String? authenticationToken = await tokenProvider.getBearerToken();
 
-      print('$authenticationToken <- authToken is this');
       if (authenticationToken != null) {
-        final UserProfileResponse userProfile = await service.getUserProfile(authenticationToken,  false);
+        final UserProfileResponse userProfile;
+        if(widget.userId != null){
+          userProfile = await service.getUserProfileByUserId(authenticationToken,widget.userId!,  false);
+        }else{
+          userProfile = await service.getUserProfile(authenticationToken,  false);
+        }
+
         print('$userProfile  ussssssss');
         return userProfile;
       } else {

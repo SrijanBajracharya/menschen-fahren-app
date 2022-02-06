@@ -66,7 +66,7 @@ class UserService{
   }
 
   Future<UserProfileResponse> getUserProfileByUserId(String authenticationToken,String userId, bool alsoVoided) async {
-    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/userProfile/userId/$userId?voided=$alsoVoided');
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/userProfile/$userId?voided=$alsoVoided');
     http.Response response;
     try {
       response = await http.get(serverAddress, headers: _buildHeader(authenticationToken));

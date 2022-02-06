@@ -2,14 +2,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
+import 'package:project_menschen_fahren/models/notification_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
+import 'package:project_menschen_fahren/providers/event_service.dart';
+import 'package:project_menschen_fahren/providers/notification_service.dart';
 import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_alert.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/date_format_helper.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:provider/provider.dart';
 
 class EventDescription extends StatefulWidget {
   final EventResponse data;
@@ -23,6 +28,10 @@ class EventDescription extends StatefulWidget {
 class _EventDescriptionState extends StatefulBasePage<EventDescription> {
   _EventDescriptionState() : super(showHamburgerMenu: false,currentIndex: 0,showBackButton: true, routeBackTo: RoutesName.MAIN_PAGE);
 
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController usernameController = TextEditingController();
+
   final Map<String, String> _editEventData = {
     'aboutMe': '',
     'hobbies': '',
@@ -30,7 +39,13 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
   };
 
   @override
+  String getTitle(BuildContext context) {
+    return "Event Detail";
+  }
+
+  @override
   Widget buildContent(BuildContext context) {
+
     return SingleChildScrollView(
         child: Center(
             child: Padding(
@@ -111,6 +126,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
   void joinButtonFunc() {}
 
   void showDialogWithFields() {
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -137,7 +153,10 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                         }
                         return null;
                       },
-                      onSaved: (value) {},
+                      controller: emailController,
+                      onSaved: (value) {
+                        emailController.text = value??'';
+                      },
                     ),
                     Padding(
                       padding: EdgeInsets.only(top:20,bottom: 20),
@@ -148,7 +167,10 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                         labelText: 'User',
                         icon: Icon(Icons.account_circle),
                       ),
-                      onSaved: (value) {},
+                      controller: usernameController,
+                      onSaved: (value) {
+                        usernameController.text = value ?? '';
+                      },
                     ),
                   ],
                 ),
@@ -164,10 +186,54 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
         });
   }
 
-  void _inviteFunc() {}
+  Future<void> _inviteFunc() async {
+    if (emailController.text.isEmpty && usernameController.text.isEmpty) {
+      return;
+    }
 
-  @override
-  String getTitle(BuildContext context) {
-    return "Event Detail";
+    Map<String, String> _inviteData = {
+
+      "receiverEmailId": emailController.text,
+      "eventId": widget.data.id
+    };
+
+    AuthenticationTokenProvider tokenProvider =
+    Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+    NotificationService service = NotificationService();
+
+    try {
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+        NotificationResponse response =
+        await service.createNotification(authenticationToken, _inviteData);
+        UiHelper.showSnackBar(
+            context: context, message: "Successfully invited user to the event.");
+
+        emailController.text = '';
+        usernameController.text = '';
+        Navigator.pop(context);
+
+        /// clears form data.
+        // _formKey.currentState?.reset();
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+      //Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
+    } catch (error) {
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error!!', message: error.toString());
+
+
+      /* if (emailController.text ==null && usernameController.text == null) {
+      // Invalid!
+      return;
+    }
+
+
+    }*/
+    }
   }
+
 }
