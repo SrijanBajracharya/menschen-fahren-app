@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'package:project_menschen_fahren/providers/event_service.dart';
+import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/date_format_helper.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +68,6 @@ class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
   }
 
   Widget _buildDataList(BuildContext context, List<EventResponse>? events) {
-    print('length: $events!.length');
     List<Widget> widgets = List.empty(growable: true);
     List<EventResponse> allFriends = List.empty(growable: true);
     if (events != null) {
@@ -107,7 +107,23 @@ class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left:15,right: 15,top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        (data.private ==true) ?
+                        Text(
+                          'Private Event',
+                        ): Text('Public Event'),
+                        Text(
+                          ''
+                        )
+                      ],
+                    )
+                  ),
                   ListTile(
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,22 +135,23 @@ class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text('Date: ${DateHelper.formatDate(data.startDate)}'),
-                        Text('Upcoming')
+                        if(DateTime.now().isBefore(data.startDate))Text(
+                            'Upcoming'
+                        )else Text('Completed')
                       ],
                     ),
-                  )
+                  ),
                 ],
               )),
         ));
   }
 
   void _tapCell(BuildContext context, EventResponse data) {
-    //Navigator.of(context)
-    //   .pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
+    Navigator.of(context)
+       .pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
   }
 
   Future<List<EventResponse>> _getMyEvents() async {
-    print('inside getEvents..');
     try {
       AuthenticationTokenProvider tokenProvider =
       Provider.of<AuthenticationTokenProvider>(context, listen: false);
@@ -146,7 +163,6 @@ class _MyEventsPage extends StatefulBasePage<MyEventsPage> {
       if (authenticationToken != null) {
         final List<EventResponse> events =
         await service.getMyEvents(authenticationToken);
-        print('events: $events');
         return events;
       } else {
         return Future.error(
