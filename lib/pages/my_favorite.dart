@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:project_menschen_fahren/constants.dart';
+import 'package:project_menschen_fahren/models/create_favorite_response.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:project_menschen_fahren/models/favorites_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
@@ -153,10 +154,11 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
                             ),
                           ),
                           FavoriteButton(
-                            isFavorite: false,
+                            isFavorite: true,
                             // iconDisabledColor: Colors.white,
                             valueChanged: (_isFavorite) {
                               print('Is Favorite : $_isFavorite');
+                              createRemoveFavorites(data);
                             },
                           ),
                         ],
@@ -210,6 +212,33 @@ class _MyFavoriteListState extends State<MyFavoriteList> {
   void _tapCell(BuildContext context, MyFavoriteResponse data) {
     Navigator.of(context)
         .pushReplacementNamed(RoutesName.EVENT_DESCRIPTION, arguments: data);
+  }
+
+  Future<void> createRemoveFavorites(MyFavoriteResponse data) async {
+    try {
+      AuthenticationTokenProvider tokenProvider =
+      Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+      EventService service = EventService();
+
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+        Map<String,String> myFavorite = {
+          "eventId": data.event.id
+        };
+
+        await service.removeFavorites(authenticationToken, myFavorite);
+        UiHelper.showSnackBar(
+            context: context, message: "Successfully completed the operation.");
+        //This is done to refresh. Might not be a best way. Later need to change to BLOC pattern.
+        Navigator.pushReplacementNamed(context, RoutesName.FAVORITES);
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+    } catch (error) {
+      return Future.error("Exception occurred $error.");
+    }
   }
 
   Future<List<MyFavoriteResponse>> _getEvents() async {

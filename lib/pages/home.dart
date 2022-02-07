@@ -1,6 +1,8 @@
 import 'package:favorite_button/favorite_button.dart';
 import 'package:project_menschen_fahren/constants.dart';
+import 'package:project_menschen_fahren/models/create_favorite_response.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
+import 'package:project_menschen_fahren/models/favorites_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -137,10 +139,11 @@ class _HomeState extends StatefulBasePage<Home> {
                             ),
                           ),
                           FavoriteButton(
-                            isFavorite: false,
+                            isFavorite: data.favorite,
                             // iconDisabledColor: Colors.white,
                             valueChanged: (_isFavorite) {
                               print('Is Favorite : $_isFavorite');
+                              createRemoveFavorites(data);
                             },
                           ),
                         ],
@@ -197,7 +200,6 @@ class _HomeState extends StatefulBasePage<Home> {
   }
 
   Future<List<EventResponse>> _getEvents() async {
-    print('inside getEvents..');
     try {
       AuthenticationTokenProvider tokenProvider =
           Provider.of<AuthenticationTokenProvider>(context, listen: false);
@@ -210,6 +212,31 @@ class _HomeState extends StatefulBasePage<Home> {
             await service.getEventResponse(authenticationToken, false, false);
         print('events: $events');
         return events;
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+    } catch (error) {
+      return Future.error("Exception occurred $error.");
+    }
+  }
+
+  Future<void> createRemoveFavorites(EventResponse data) async {
+    try {
+      AuthenticationTokenProvider tokenProvider =
+      Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+      EventService service = EventService();
+
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+        Map<String,String> myFavorite = {
+          "eventId": data.id
+        };
+
+        await service.removeFavorites(authenticationToken, myFavorite);
+        UiHelper.showSnackBar(
+            context: context, message: "Successfully completed the operation.");
       } else {
         return Future.error(
             "Error loading authentication token. Please log in again.");

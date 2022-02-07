@@ -41,6 +41,13 @@ class AuthenticationTokenProvider extends ChangeNotifier {
     if (!prefs.containsKey(USER_DATA_TOKEN)) {
       return null;
     }else{
+
+      final DateTime expiryDate = DateTime.parse(prefs.getString(USER_DATA_EXPIRES_IN)!);
+      DateTime now = DateTime.now();
+      if(now.isAfter(expiryDate)){
+        await logout();
+        return null;
+      }
       final String userData = prefs.getString(USER_DATA_TOKEN)!;
       //final extractedUserData = json.decode(userData) as Map<String, dynamic>;
 

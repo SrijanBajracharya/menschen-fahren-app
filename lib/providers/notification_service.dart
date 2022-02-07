@@ -22,17 +22,16 @@ class NotificationService{
   }
 
   /* Returns the DataCache entries according to the provided filter. */
-  Future<List<EventResponse>> getEventResponse(String authenticationToken, bool alsoVoided,bool alsoPrivate) async {
-    return _fetchEvents(authenticationToken,alsoVoided, alsoPrivate);
+  Future<List<NotificationResponse>> getNotifications(String authenticationToken, bool alsoVoided) async {
+    return _fetchNotification(authenticationToken,alsoVoided);
 
   }
 
   /* Returns DataCacheEntries from the service. */
-  Future<List<EventResponse>> _fetchEvents(String authenticationToken,bool alsoVoided,bool alsoPrivate) async {
+  Future<List<NotificationResponse>> _fetchNotification(String authenticationToken,bool alsoVoided) async {
 
-    print('i am here...... $alsoVoided $alsoPrivate');
     // create a URL based on the configured url and known endpoint that contains the parameters.
-    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/events?voided=$alsoVoided&alsoPrivate=$alsoPrivate');
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/notification?voided=$alsoVoided');
 
     print('serverAddress: $serverAddress');
     http.Response response;
@@ -50,7 +49,7 @@ class NotificationService{
         //Read the "data" field from the response for the list of DataCacheEntry.
         final jsonData = jsonDecode(response.body);
         // TODO maybe make it more stable for cases if only one of them fails to parse.
-        return EventResponse.listFromJson(jsonData['data']);
+        return NotificationResponse.listFromJson(jsonData['data']);
 
       } catch (e) {
         return Future.error(e);
@@ -61,7 +60,7 @@ class NotificationService{
 
     } else {
 
-      String errorResponse = _handleErrorResponse(response, "getEvents");
+      String errorResponse = _handleErrorResponse(response, "getNotification");
       return Future.error(errorResponse);
     }
   }

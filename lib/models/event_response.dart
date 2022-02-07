@@ -1,5 +1,6 @@
 import 'package:project_menschen_fahren/models/event_create_request.dart';
 import 'package:project_menschen_fahren/models/event_type_response.dart';
+import 'package:project_menschen_fahren/models/user_response.dart';
 
 class EventResponse {
 
@@ -30,9 +31,13 @@ class EventResponse {
   int numberOfParticipants;
 
   bool private;
+  
+  UserResponse user;
+
+  bool favorite;
 
   EventResponse({required this.id, required this.voided, required this.createdTimestamp, required this.eventType,required  this.name, required this.location,required  this.country, required this.description
-    , required this.ageGroup,required  this.startDate, required this.endDate, required this.numberOfParticipants, required this.private});
+    , required this.ageGroup,required  this.startDate, required this.endDate, required this.numberOfParticipants, required this.private, required this.user,required this.favorite});
 
   /* Build an entity from the given json data. */
   factory EventResponse.fromJson(Map<String,dynamic> json) {
@@ -52,6 +57,9 @@ class EventResponse {
       endDate: DateTime.parse(json['endDate']),
       numberOfParticipants: json['numberOfParticipants'],
       private: json['private'],
+      user: UserResponse.fromJson(json['user']),
+      favorite: (json['favorite'] == null)?false: json['favorite'] as bool
+
     );
   }
 

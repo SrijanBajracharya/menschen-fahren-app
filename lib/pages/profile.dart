@@ -150,8 +150,6 @@ class _ProfileState extends StatefulBasePage<Profile> {
         }else{
           userProfile = await service.getUserProfile(authenticationToken,  false);
         }
-
-        print('$userProfile  ussssssss');
         return userProfile;
       } else {
         return Future.error(

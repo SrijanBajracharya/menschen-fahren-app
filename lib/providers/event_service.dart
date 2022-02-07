@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:project_menschen_fahren/config/app_config.dart';
+import 'package:project_menschen_fahren/models/create_favorite_response.dart';
 import 'package:project_menschen_fahren/models/event_edit_request.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
 import 'package:http/http.dart' as http;
@@ -108,8 +109,6 @@ class EventService{
   Future<List<MyFavoriteResponse>> getFavoriteEvents(String authenticationToken) async {
     // create a URL based on the configured url and known endpoint that contains the parameters.
     Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/favorites');
-
-    print('serverAddress: $serverAddress');
     http.Response response;
     try {
       response = await http.get(serverAddress, headers: _buildHeader(authenticationToken));
@@ -173,6 +172,17 @@ class EventService{
 
       String errorResponse = _handleErrorResponse(response, "createUser");
       return Future.error(errorResponse);
+    }
+
+  }
+
+  Future<void> removeFavorites(String authenticationToken, Map<String,String> data) async {
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/favorites');
+    http.Response response;
+    try {
+      response = await http.post(serverAddress, headers: _buildHeader(authenticationToken), body: jsonEncode(data));
+    } catch(e) {
+      return Future.error(e);
     }
 
   }

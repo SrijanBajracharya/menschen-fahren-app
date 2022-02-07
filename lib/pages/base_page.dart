@@ -1,15 +1,19 @@
 import 'package:project_menschen_fahren/constants.dart';
 import 'package:project_menschen_fahren/models/notification_data.dart';
+import 'package:project_menschen_fahren/models/notification_response.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_menschen_fahren/pages/create_event_page.dart';
 import 'package:project_menschen_fahren/pages/home.dart';
 import 'package:project_menschen_fahren/pages/profile.dart';
+import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
+import 'package:project_menschen_fahren/providers/notification_service.dart';
 import 'package:project_menschen_fahren/route_generator.dart';
 import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/app_drawer.dart';
 import 'package:project_menschen_fahren/widgets/components/notification.dart';
+import 'package:provider/provider.dart';
 
 abstract class BasePage extends StatelessWidget {
   const BasePage({Key? key}) : super(key: key);
@@ -174,22 +178,87 @@ abstract class StatefulBasePage<T extends StatefulWidget> extends State<T> {
 
   String getTitle(BuildContext context);
 
-  void openDialog() {
-    List<UserNotification> userNotifications = <UserNotification>[];
-    userNotifications.add(UserNotification(
-        user: 'Srijan', eventName: 'Pokhara Trip', requestToJoin: true));
-    userNotifications.add(UserNotification(
-        user: 'John', eventName: 'Japan Trip', requestToJoin: false));
+  Future<void> openDialog() async{
 
-    NotificationData notificationData =
-        NotificationData(notifications: userNotifications);
+    List<NotificationResponse> _notification = await _getNotifications();
 
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return NotificationDialog(
               notificationData:
-                  NotificationData(notifications: userNotifications));
+              NotificationData(notifications: _notification));
         },
         fullscreenDialog: true));
+
+    /*FutureBuilder<List<NotificationResponse>>(
+      future: _notification,
+      builder:
+          (BuildContext context, AsyncSnapshot<List<NotificationResponse>> snapshot) {
+        if (snapshot.hasData) {
+          List<NotificationResponse> allNotifications = [];
+          if (snapshot.data != null) {
+            allNotifications.addAll(snapshot.data!);
+          }
+          return  NotificationDialog(
+              notificationData:
+              NotificationData(notifications: allNotifications));
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(context, snapshot.error);
+        } else {
+          return _buildLoadingWidget(context);
+        }
+      },
+    );*/
+
   }
+
+  /* Builds the widget shown while the Approvals are loading. */
+  Widget _buildLoadingWidget(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          const SizedBox(
+            child: CircularProgressIndicator(),
+            height: 80,
+            width: 80,
+          ),
+          // Show a loading text
+          Text('Loading')
+        ],
+      ),
+    );
+  }
+
+  /* Widget show in case of an error. */
+  Widget _buildErrorWidget(BuildContext context, Object? error) {
+    return Center(
+      // TODO better text
+      child: Text("Error: " + error!.toString()),
+    );
+  }
+
+
+
+  Future<List<NotificationResponse>> _getNotifications() async {
+    print('inside getEvents..');
+    try {
+      AuthenticationTokenProvider tokenProvider =
+      Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+      NotificationService service = NotificationService();
+
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+        final List<NotificationResponse> notifications =
+        await service.getNotifications(authenticationToken, false);
+        return notifications;
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+    } catch (error) {
+      return Future.error("Exception occurred $error.");
+    }
+  }
+
 }
