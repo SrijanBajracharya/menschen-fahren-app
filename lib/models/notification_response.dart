@@ -18,16 +18,22 @@ class NotificationResponse {
 
   bool alsoVoided;
 
-  NotificationResponse(
-      {required this.id,
-      required this.senderUser,
-      required this.receiverUser,
-      required this.event,
-      required this.notificationType,
-      required this.notificationStatus,
-      required this.modifiedTimestamp,
-      required this.alsoVoided})
-      : super();
+  bool matchedReceiverUserId;
+
+  bool matchedSenderUserId;
+
+  NotificationResponse({
+    required this.id,
+    required this.senderUser,
+    required this.receiverUser,
+    required this.event,
+    required this.notificationType,
+    required this.notificationStatus,
+    required this.modifiedTimestamp,
+    required this.alsoVoided,
+    required this.matchedReceiverUserId,
+    required this.matchedSenderUserId
+  }): super();
 
   /* Build an entity from the given json data. */
   factory NotificationResponse.fromJson(Map<String,dynamic> json) {
@@ -41,6 +47,8 @@ class NotificationResponse {
       notificationStatus:json['notificationStatus'],
       notificationType: json['notificationType'],
       alsoVoided: json['alsoVoided'] as bool,
+      matchedReceiverUserId: json['matchedReceiverUserId'] as bool,
+      matchedSenderUserId: json['matchedSenderUserId'] as bool,
     );
   }
 
