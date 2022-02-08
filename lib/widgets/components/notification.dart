@@ -5,11 +5,15 @@ import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/notification_data.dart';
 import 'package:project_menschen_fahren/models/notification_response.dart';
 import 'package:project_menschen_fahren/models/user_notification.dart';
+import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
+import 'package:project_menschen_fahren/providers/notification_service.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/helper/ui_helper.dart';
+import 'package:provider/provider.dart';
 
 class NotificationDialog extends StatelessWidget {
   final NotificationData notificationData;
+
 
   NotificationDialog({Key? key, required this.notificationData})
       : super(key: key);
@@ -26,11 +30,11 @@ class NotificationDialog extends StatelessWidget {
           style: TextStyle(color: Colors.black87),
         ),
       ),
-      body: buildNotificationItem(this.notificationData.notifications),
+      body: buildNotificationItem(this.notificationData.notifications,context),
     );
   }
 
-  Widget buildNotificationItem(List<NotificationResponse> userNotification) {
+  Widget buildNotificationItem(List<NotificationResponse> userNotification,BuildContext context) {
     TextStyle defaultStyle = TextStyle(
         color: Colors.black,
         fontSize: 16.0,
@@ -44,7 +48,7 @@ class NotificationDialog extends StatelessWidget {
             return InkWell(
                 child: Padding(
               padding: const EdgeInsets.only(bottom: 5, top: 5),
-              child: _buildNotificationWidget(userNotification, index)
+              child: _buildNotificationWidget(userNotification, index,context)
             ));
           },
         )),
@@ -53,18 +57,16 @@ class NotificationDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationWidget(List<NotificationResponse> userNotification, int index){
-    print(userNotification[index].notificationStatus);
-    print(userNotification[index].notificationType);
+  Widget _buildNotificationWidget(List<NotificationResponse> userNotification, int index,BuildContext context){
     Widget widget;
     if(userNotification[index].notificationType == 'request' &&
         userNotification[index].notificationStatus == 'pending'){
       print('if cond');
-      widget = _buildPendingRequestWidget(userNotification, index);
+      widget = _buildPendingRequestWidget(userNotification, index,context);
     }else if(userNotification[index].notificationType == 'invite' &&
         userNotification[index].notificationStatus == 'pending'){
       print('first else if cond');
-      widget = _buildPendingInviteWidget(userNotification, index);
+      widget = _buildPendingInviteWidget(userNotification, index,context);
     }else if(userNotification[index].notificationType == 'request' &&
         (userNotification[index].notificationStatus == 'approved' || userNotification[index].notificationStatus == 'declined')){
       print('second else if');
@@ -87,7 +89,7 @@ class NotificationDialog extends StatelessWidget {
                 text: TextSpan(
                   style: _getTextDefault(),
                   children: <TextSpan>[
-                    TextSpan(text: ' You have ${userNotification[index].notificationStatus} the request from '),
+                    TextSpan(text: 'You have ${userNotification[index].notificationStatus} the request from '),
                     TextSpan(
                         text: userNotification[index].senderUser.username,
                         style: TextStyle(fontWeight: FontWeight.bold)),
@@ -98,7 +100,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
         else if (userNotification[index].matchedSenderUserId)
@@ -119,7 +121,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
       ],
@@ -137,7 +139,7 @@ class NotificationDialog extends StatelessWidget {
                 text: TextSpan(
                   style: _getTextDefault(),
                   children: <TextSpan>[
-                    TextSpan(text: ' You have ${userNotification[index].notificationStatus} the invitation from  '),
+                    TextSpan(text: 'You have ${userNotification[index].notificationStatus} the invitation from  '),
                     TextSpan(
                         text: userNotification[index].senderUser.username,
                         style: TextStyle(fontWeight: FontWeight.bold)),
@@ -148,7 +150,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
         else if (userNotification[index].matchedSenderUserId)
@@ -169,7 +171,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
       ],
@@ -177,7 +179,7 @@ class NotificationDialog extends StatelessWidget {
   }
 
   Widget _buildPendingInviteWidget(
-      List<NotificationResponse> userNotification, int index) {
+      List<NotificationResponse> userNotification, int index,BuildContext context) {
     return Column(
       children: [
         if (userNotification[index].matchedReceiverUserId)
@@ -202,15 +204,15 @@ class NotificationDialog extends StatelessWidget {
                 children: [
                   CustomButton(
                       buttonText: 'Accept',
-                      onPressedFunc: () => acceptButton(),
+                      onPressedFunc: () => acceptButton(userNotification[index],context),
                       buttonType: ButtonType.OUTLINE),
                   CustomButton(
                       buttonText: 'Deny',
-                      onPressedFunc: () => denyButton(),
+                      onPressedFunc: () => denyButton(userNotification[index],context),
                       buttonType: ButtonType.OUTLINE),
                 ],
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
         else if (userNotification[index].matchedSenderUserId)
@@ -231,7 +233,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
       ],
@@ -240,7 +242,7 @@ class NotificationDialog extends StatelessWidget {
   }
 
   Widget _buildPendingRequestWidget(
-      List<NotificationResponse> userNotification, int index) {
+      List<NotificationResponse> userNotification, int index,BuildContext context) {
     return Column(
       children: [
         if (userNotification[index].matchedReceiverUserId)
@@ -267,15 +269,15 @@ class NotificationDialog extends StatelessWidget {
                 children: [
                   CustomButton(
                       buttonText: 'Approve',
-                      onPressedFunc: () => approveButton(),
+                      onPressedFunc: () => approveButton(userNotification[index],context),
                       buttonType: ButtonType.OUTLINE),
                   CustomButton(
                       buttonText: 'Reject',
-                      onPressedFunc: () => rejectButton(),
+                      onPressedFunc: () => rejectButton(userNotification[index],context),
                       buttonType: ButtonType.OUTLINE),
                 ],
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
         else if (userNotification[index].matchedSenderUserId)
@@ -285,7 +287,7 @@ class NotificationDialog extends StatelessWidget {
                 text: TextSpan(
                   style: _getTextDefault(),
                   children: <TextSpan>[
-                    TextSpan(text: ' You have sent a request to  '),
+                    TextSpan(text: 'You have sent a request to  '),
                     TextSpan(
                         text: userNotification[index].receiverUser.username,
                         style: TextStyle(
@@ -298,7 +300,7 @@ class NotificationDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              UiHelper.buildDividerWithIndent(startIndent: 20, endIndent: 20)
+              UiHelper.buildDividerWithIndent(startIndent: 10, endIndent: 10)
             ],
           )
       ],
@@ -312,19 +314,50 @@ class NotificationDialog extends StatelessWidget {
         fontFamily: Constants.PRIMARY_FONT_FAMILY);
   }
 
-  void approveButton() {
-    print('approve is clicked');
+  void approveButton(NotificationResponse data,BuildContext context) async{
+    buttonOperation(data, "approved", context, "Successfully Approved the invitation.");
   }
 
-  void rejectButton() {
-    print('reject is clicked');
+  void rejectButton(NotificationResponse data,BuildContext context) {
+    buttonOperation(data, "declined", context,"Successfully Rejected the invitation.");
   }
 
-  void acceptButton() {
-    print('accept is clicked');
+  void acceptButton(NotificationResponse data,BuildContext context) {
+    buttonOperation(data, "approved", context,"Successfully Accepted the Request.");
   }
 
-  void denyButton() {
-    print('deny is clicked');
+  void denyButton(NotificationResponse data,BuildContext context) {
+    buttonOperation(data, "declined", context,"Successfully Declined the Request.");
+  }
+
+  Future<void> buttonOperation(NotificationResponse data,String notificationStatus, BuildContext context,String message) async{
+    AuthenticationTokenProvider tokenProvider =
+    Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+    NotificationService service = NotificationService();
+
+    try {
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+
+        Map<String,String> userData = {
+          "notificationStatus" : notificationStatus,
+        };
+
+        NotificationResponse response =
+            await service.updateNotification(authenticationToken,data.id,data.senderUser.id, userData);
+        UiHelper.showSnackBar(
+            context: context, message: message);
+        Navigator.pop(context);
+
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+      //Navigator.of(context).pushReplacementNamed(RoutesName.ROUTE_LOGIN);
+    } catch (error) {
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error!!', message: error.toString());
+    }
   }
 }

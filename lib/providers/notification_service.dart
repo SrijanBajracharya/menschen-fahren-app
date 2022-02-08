@@ -98,6 +98,38 @@ class NotificationService{
 
   }
 
+
+  Future<NotificationResponse> updateNotification(String authenticationToken,String notificationId,String originalSenderId, Map<String,String> data) async {
+    Uri serverAddress = Uri.parse(GlobalConfig.menschenFahrenServiceUrl + '/api/notification/$notificationId/sender/$originalSenderId');
+    http.Response response;
+    try {
+      response = await http.patch(serverAddress, headers: _buildHeader(authenticationToken), body: jsonEncode(data));
+      print(response.body);
+    } catch(e) {
+      return Future.error(e);
+    }
+
+    if (response.statusCode == 200) {
+
+      try {
+
+        //Read the "data" field from the response for the list of DataCacheEntry.
+        final jsonData = jsonDecode(response.body);
+        // TODO maybe make it more stable for cases if only one of them fails to parse.
+        return NotificationResponse.fromJson(jsonData['data']);
+
+      } catch (e) {
+        return Future.error(e);
+      }
+
+    }  else {
+
+      String errorResponse = _handleErrorResponse(response, "createUser");
+      return Future.error(errorResponse);
+    }
+
+  }
+
   /* Handle the response in an error case and returns an error description. */
   String _handleErrorResponse(http.Response response, String requestName) {
 
