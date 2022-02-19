@@ -10,7 +10,7 @@ class EventResponse {
 
   DateTime createdTimestamp;
 
-  String eventType;
+  EventTypeDtoResponse eventType;
 
   //String userId;
 
@@ -45,7 +45,7 @@ class EventResponse {
     return EventResponse(
       id : json['id'],
       voided: json['voided'],
-      eventType: json['eventType'],
+      eventType: EventTypeDtoResponse.fromJson(json['eventType']),
       createdTimestamp: DateTime.parse(json['createdTimestamp']),
       //userId : json['userId'],
       name: json['name'],

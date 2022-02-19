@@ -103,11 +103,8 @@ class AuthenticationTokenProvider extends ChangeNotifier {
       print(url);
 
       Uri serviceUrl = Uri.parse(url);
-      print( '$serviceUrl');
       http.Response response = await http.post(serviceUrl, headers: headers, body: json.encode(data));
-      print(response.body);
       dynamic responseData = json.decode(response.body);
-      print('${responseData['data']} responseData');
       if (responseData['error'] != null) {
         log.d("Error while trying to login. $responseData['error']");
         throw HttpException(responseData['error']['error_description']);

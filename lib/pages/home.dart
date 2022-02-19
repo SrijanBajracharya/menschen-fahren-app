@@ -238,8 +238,9 @@ class _HomeState extends StatefulBasePage<Home> {
         UiHelper.showSnackBar(
             context: context, message: "Successfully completed the operation.");
       } else {
-        return Future.error(
-            "Error loading authentication token. Please log in again.");
+        await tokenProvider.logout();
+        /*return Future.error(
+            "Error loading authentication token. Please log in again.");*/
       }
     } catch (error) {
       return Future.error("Exception occurred $error.");

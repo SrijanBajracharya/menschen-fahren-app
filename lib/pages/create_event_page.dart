@@ -3,11 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:project_menschen_fahren/helper/common_helper.dart';
 import 'package:project_menschen_fahren/models/button_type.dart';
 import 'package:project_menschen_fahren/models/event_response.dart';
+import 'package:project_menschen_fahren/models/event_type_response.dart';
 import 'package:project_menschen_fahren/pages/base_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_menschen_fahren/providers/authentication_token_provider.dart';
 import 'package:project_menschen_fahren/providers/event_service.dart';
+import 'package:project_menschen_fahren/providers/event_type_service.dart';
 import 'package:project_menschen_fahren/routes_name.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_button.dart';
 import 'package:project_menschen_fahren/widgets/components/custom_dropdown.dart';
@@ -74,7 +76,7 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
               validate: true,
               dataForm: _createEventData,
               formKey: 'eventType',
-              initValue: widget.data?.eventType,
+              initValue: widget.data?.eventType.name,
           ),
           UiHelper.getTextField(
               labelText: "Number of Participants",
@@ -134,6 +136,30 @@ class _CreateEventState extends StatefulBasePage<CreateEvent> {
       ),
     ));
   }
+
+ /* Future<List<EventTypeDtoResponse>> _getEventTypes() async {
+
+    AuthenticationTokenProvider tokenProvider =
+    Provider.of<AuthenticationTokenProvider>(context, listen: false);
+
+    EventTypeService service = EventTypeService();
+
+    try {
+      String? authenticationToken = await tokenProvider.getBearerToken();
+      if (authenticationToken != null) {
+        List<EventTypeDtoResponse> response =
+        await service.getEventTypeResponse(authenticationToken);
+
+        return response;
+      } else {
+        return Future.error(
+            "Error loading authentication token. Please log in again.");
+      }
+    } catch (error) {
+      UiHelper.showErrorDialog(
+          context: context, header: 'Error!!', message: error.toString());
+    }
+  }*/
 
   Future<void> _onCreatePress() async {
     if (!_formKey.currentState!.validate()) {

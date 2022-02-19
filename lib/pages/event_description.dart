@@ -66,7 +66,7 @@ class _EventDescriptionState extends StatefulBasePage<EventDescription> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     UiHelper.buildIconInfo(FontAwesomeIcons.calendar, null,
-                        widget.data.eventType),
+                        widget.data.eventType.name),
                     UiHelper.buildIconInfo(FontAwesomeIcons.users, null,
                         widget.data.numberOfParticipants.toString()),
                   ],
